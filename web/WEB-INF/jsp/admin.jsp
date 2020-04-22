@@ -15,10 +15,10 @@
         <table border width="100px" widht="100px">
             <tr>
                 <td>
-                    ${user.userName}
+                   UserName ${user.userName}
                 </td>
                 <td>
-                    ${userid}
+                   UserId ${userid}
                 </td>
                 <td>
                     <form action="http://localhost:8084/BiomatricsAttendenceSystem/admin/adduser.htm" method="post">

@@ -189,5 +189,29 @@ public class AttendenceSystemDB
         return false;
         
     }
+     public static boolean isPresent(String userName,String password )
+    {
+          ResultSet resultRecord = null;
+        try {
+            String string="SELECT username,password from login";
+            statement = connection.createStatement();
+            resultRecord = statement.executeQuery(string);
+            while (resultRecord.next())
+            {                
+             String getUserName=resultRecord.getString("username");
+             String getPassword=resultRecord.getString("password");
+             if(getUserName.equals(userName) && getPassword.equals(password))
+             {
+                 return true;
+             }
+            }
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(AttendenceSystemDB.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return false;
+        
+    }
+
             
 }

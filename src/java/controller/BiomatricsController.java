@@ -25,7 +25,6 @@ public class BiomatricsController
 {
     private final String ADMIN="admin";
     private final String USER="user";
-    private AttendenceSystemDB attendenceSystemDB;
     @RequestMapping("login.htm")
     public ModelAndView getlogin(@ModelAttribute AccessValidate accessValidate) {
         ModelAndView mav=new ModelAndView("login");
@@ -36,29 +35,38 @@ public class BiomatricsController
     {
         ModelAndView mav = null;
         String userName = accessValidate.getUserName();
+        System.out.println("userName = " + userName);
         String password = accessValidate.getPassword();
-        String sql = "SELECT userid, password,username FROM login";
+        System.out.println("password = " + password);
+        String sql = "SELECT * FROM login";
+        int userId=0;
+        String getUserIdsql="SELECT userid from login WHERE username="+"'"+userName+"'";
         try {
-            attendenceSystemDB=new AttendenceSystemDB();
-            ResultSet record = attendenceSystemDB.selectRecord(sql);
-            while(record.next())
+        ResultSet getId=AttendenceSystemDB.selectRecord(getUserIdsql);
+            while (getId.next())
             {
-            int id = record.getInt("userid");
-                System.out.println("id = " + id);
-            String recordPassword = record.getString("password");
-            String recordUserName = record.getString("username");
-            if (userName.equals(recordUserName) && password.equals(recordPassword))
+               userId=getId.getInt("userid");
+            }
+                System.out.println("userId = " + userId);
+        } catch (SQLException ex) {
+            Logger.getLogger(BiomatricsController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+       
+        try {
+            boolean isPresent=AttendenceSystemDB.isPresent(userName, password);
+            
+            if (isPresent)
             {
                 String getRoleId="SELECT roleid FROM user INNER JOIN login ON user.userid=login.userid";
-                ResultSet resultRoleId=attendenceSystemDB.selectRecord(getRoleId);
+                ResultSet resultRoleId=AttendenceSystemDB.selectRecord(getRoleId);
                  int roleId=0;
                 while(resultRoleId.next())
                 {
                 roleId=resultRoleId.getInt("roleid");
                     System.out.println("roleId = " + roleId);
                 }
-                String getRoleQuery="SELECT role FROM roles INNER JOIN user ON roles.id=user.roleid WHERE user.userid="+id+"";
-                ResultSet resultRole=attendenceSystemDB.selectRecord(getRoleQuery);
+                String getRoleQuery="SELECT role FROM roles INNER JOIN user ON roles.id=user.roleid WHERE user.userid="+userId+"";
+                ResultSet resultRole=AttendenceSystemDB.selectRecord(getRoleQuery);
                 String role="";
                 while(resultRole.next())
                 {
@@ -69,14 +77,14 @@ public class BiomatricsController
                 {
                     mav=new ModelAndView("admin");
                     mav.addObject("user", accessValidate);
-                   mav.addObject("userid", id);
+                   mav.addObject("userid", userId);
                     return mav;
                 }
                 else
                 {
                    mav=new ModelAndView("user");
                    mav.addObject("user", accessValidate);
-                   mav.addObject("userid", id);
+                   mav.addObject("userid", userId);
                    return mav;
                 }
             } 
@@ -84,8 +92,6 @@ public class BiomatricsController
                 mav=new ModelAndView("index");
                 return mav;
             }
-            }
-
         } catch (SQLException ex) {
             Logger.getLogger(BiomatricsController.class.getName()).log(Level.SEVERE, null, ex);
         }
