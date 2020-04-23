@@ -10,7 +10,7 @@ import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import model.AccessValidate;
-import model.AttendenceSystemDB;
+import model.AttendenceSystemDb;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -43,7 +43,7 @@ public class UserController {
         int userId = 0;
         String getUserIdsql = "SELECT userid from login WHERE username=" + "'" + userName + "'";
         try {
-            ResultSet getId = AttendenceSystemDB.selectRecord(getUserIdsql);
+            ResultSet getId = AttendenceSystemDb.selectRecord(getUserIdsql);
             while (getId.next()) {
                 userId = getId.getInt("userid");
             }
@@ -53,18 +53,18 @@ public class UserController {
         }
 
         try {
-            boolean isPresent = AttendenceSystemDB.isPresent(userName, password);
+            boolean isPresent = AttendenceSystemDb.isPresent(userName, password);
 
             if (isPresent) {
                 String getRoleId = "SELECT roleid FROM user INNER JOIN login ON user.userid=login.userid";
-                ResultSet resultRoleId = AttendenceSystemDB.selectRecord(getRoleId);
+                ResultSet resultRoleId = AttendenceSystemDb.selectRecord(getRoleId);
                 int roleId = 0;
                 while (resultRoleId.next()) {
                     roleId = resultRoleId.getInt("roleid");
                     System.out.println("roleId = " + roleId);
                 }
                 String getRoleQuery = "SELECT role FROM roles INNER JOIN user ON roles.id=user.roleid WHERE user.userid=" + userId + "";
-                ResultSet resultRole = AttendenceSystemDB.selectRecord(getRoleQuery);
+                ResultSet resultRole = AttendenceSystemDb.selectRecord(getRoleQuery);
                 String role = "";
                 while (resultRole.next()) {
                     role = resultRole.getString("role");

@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import model.AddUser;
-import model.AttendenceSystemDB;
+import model.AttendenceSystemDb;
 import model.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -42,7 +42,7 @@ public class AdminController {
 
         try {
 
-            resultSet = AttendenceSystemDB.selectRecord(sqlViewList);
+            resultSet = AttendenceSystemDb.selectRecord(sqlViewList);
             while (resultSet.next()) {
                 User user = new User();
                 user.setUserId(resultSet.getInt("userid"));
@@ -51,15 +51,15 @@ public class AdminController {
                 user.setIsActive(resultSet.getInt("isActive"));
                 user.setCreatedDate(resultSet.getString("createddate"));
                 user.setUpdatedDate(resultSet.getString("updateddate"));
-                ResultSet userName = AttendenceSystemDB.selectUserName(resultSet.getInt("userid"));
+                ResultSet userName = AttendenceSystemDb.selectUserName(resultSet.getInt("userid"));
                 while (userName.next()) {
                     user.setUserName(userName.getString("username"));
                 }
-                ResultSet role = AttendenceSystemDB.selectRole(resultSet.getInt("roleid"));
+                ResultSet role = AttendenceSystemDb.selectRole(resultSet.getInt("roleid"));
                 while (role.next()) {
                     user.setRole(role.getString("role"));
                 }
-                ResultSet deptName = AttendenceSystemDB.selectDepartment(resultSet.getInt("departmentid"));
+                ResultSet deptName = AttendenceSystemDb.selectDepartment(resultSet.getInt("departmentid"));
                 while (deptName.next()) {
                     user.setDepartment(deptName.getString("name"));
                 }
@@ -94,14 +94,14 @@ public class AdminController {
         String updatedDate = addUser.getUpdatedDate();
         String userName = addUser.getUserName();
         String password = addUser.getPassword();
-        boolean isPresent = AttendenceSystemDB.isPresent(firstName, lastName, email);
+        boolean isPresent = AttendenceSystemDb.isPresent(firstName, lastName, email);
         if (!isPresent) {
-            AttendenceSystemDB.insertUser(null, firstName, lastName, deptId, roleId, address, email, isActive, createdDate, updatedDate);
-            ResultSet userId = AttendenceSystemDB.selectUserId(userName);
+            AttendenceSystemDb.insertUser(null, firstName, lastName, deptId, roleId, address, email, isActive, createdDate, updatedDate);
+            ResultSet userId = AttendenceSystemDb.selectUserId(userName);
             try {
                 while (userId.next()) {
                     int id = userId.getInt("userid");
-                    AttendenceSystemDB.insertLogIn(id, password, userName);
+                    AttendenceSystemDb.insertLogIn(id, password, userName);
 
                 }
             } catch (SQLException ex) {
