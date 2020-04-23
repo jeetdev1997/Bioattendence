@@ -6,7 +6,7 @@
 <%@taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
 <%@page import="java.security.cert.PKIXRevocationChecker.Option"%>
 <%@page import="java.sql.ResultSet"%>
-<%@page import="model.AttendenceSystemDB"%>
+<%@page import="model.AttendenceSystemDb"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -40,7 +40,7 @@
                         <option value="null">Select</option>
                         <%
                             String sql = "SELECT id,name from department";
-                            this.record = AttendenceSystemDB.selectRecord(sql);
+                            this.record = AttendenceSystemDb.selectRecord(sql);
                             while (record.next()) {
                                 int id = record.getInt("id");
                                 System.out.println("id = " + id);
@@ -58,7 +58,7 @@
                         <option value="null">Select</option>
                         <%
                             String sqlRoleId = "SELECT id,role from roles";
-                            record = AttendenceSystemDB.selectRecord(sqlRoleId);
+                            record = AttendenceSystemDb.selectRecord(sqlRoleId);
                             while (record.next()) {
                                 int id = record.getInt("id");
                                 String role = record.getString("role");
