@@ -20,7 +20,7 @@ import java.util.logging.Logger;
 public class AttendenceSystemDb {
 
     private static final String JDBC_DRIVER = "com.mysql.jdbc.Driver";
-    private static final String JDBC_URL = "jdbc:mysql://localhost:3306/attendence_system_db";
+    private static final String JDBC_URL = "jdbc:mysql://localhost:3306/attendance_system_db";
     private static final String USER = "root";
     private static final String PASSWORD = "root";
     private static Connection connection = null;
@@ -105,6 +105,7 @@ public class AttendenceSystemDb {
     public static ResultSet selectRecord(String string) throws SQLException {
         ResultSet resultRecord = null;
         try {
+            System.out.println("connection : "+connection);
             statement = connection.createStatement();
             resultRecord = statement.executeQuery(string);
         } catch (SQLException ex) {

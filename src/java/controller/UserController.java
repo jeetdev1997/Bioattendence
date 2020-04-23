@@ -5,12 +5,14 @@
  */
 package controller;
 
-import java.sql.ResultSet;
+import com.junkie.common.ICommonConstant;
+import com.junkie.db.DatabaseHelper;
+import com.junkie.dto.LoginDTO;
+import com.junkie.dto.UserDTO;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import model.AccessValidate;
-import model.AttendenceSystemDb;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,8 +25,8 @@ import org.springframework.web.servlet.ModelAndView;
 @Controller
 public class UserController {
 
-    private final String ADMIN = "admin";
-    private final String USER = "user";
+    private final String ADMIN = "ADMIN";
+    private final String USER = "EMPLOYEE";
 
     @RequestMapping("login.htm")
     public ModelAndView getlogin(@ModelAttribute AccessValidate accessValidate) {
@@ -34,61 +36,35 @@ public class UserController {
 
     @RequestMapping("form.htm")
     public ModelAndView login(@ModelAttribute AccessValidate accessValidate) {
-        ModelAndView mav = null;
+        ModelAndView mav = new ModelAndView();
         String userName = accessValidate.getUserName();
         System.out.println("userName = " + userName);
         String password = accessValidate.getPassword();
         System.out.println("password = " + password);
-        String sql = "SELECT * FROM login";
-        int userId = 0;
-        String getUserIdsql = "SELECT userid from login WHERE username=" + "'" + userName + "'";
         try {
-            ResultSet getId = AttendenceSystemDb.selectRecord(getUserIdsql);
-            while (getId.next()) {
-                userId = getId.getInt("userid");
-            }
-            System.out.println("userId = " + userId);
-        } catch (SQLException ex) {
-            Logger.getLogger(UserController.class.getName()).log(Level.SEVERE, null, ex);
-        }
-
-        try {
-            boolean isPresent = AttendenceSystemDb.isPresent(userName, password);
-
-            if (isPresent) {
-                String getRoleId = "SELECT roleid FROM user INNER JOIN login ON user.userid=login.userid";
-                ResultSet resultRoleId = AttendenceSystemDb.selectRecord(getRoleId);
-                int roleId = 0;
-                while (resultRoleId.next()) {
-                    roleId = resultRoleId.getInt("roleid");
-                    System.out.println("roleId = " + roleId);
-                }
-                String getRoleQuery = "SELECT role FROM roles INNER JOIN user ON roles.id=user.roleid WHERE user.userid=" + userId + "";
-                ResultSet resultRole = AttendenceSystemDb.selectRecord(getRoleQuery);
-                String role = "";
-                while (resultRole.next()) {
-                    role = resultRole.getString("role");
-                    System.out.println("role = " + role);
-                }
-                if (role.equals(ADMIN)) {
-                    mav = new ModelAndView("admin");
+            LoginDTO loginDTO = DatabaseHelper.getLoginUser(userName, password);
+            if (loginDTO != null & loginDTO.getUserId() != 0) {
+                UserDTO userDto = DatabaseHelper.getUserById(loginDTO.getUserId());
+                if (userDto.getRoles().getName().equalsIgnoreCase(ICommonConstant.ADMIN)) {
+                    mav.setViewName("admin");
                     mav.addObject("user", accessValidate);
-                    mav.addObject("userid", userId);
+                    mav.addObject("userid", loginDTO.getUserId());
                     return mav;
                 } else {
-                    mav = new ModelAndView("user");
+                    mav.setViewName("user");
                     mav.addObject("user", accessValidate);
-                    mav.addObject("userid", userId);
+                    mav.addObject("userid", loginDTO.getUserId());
                     return mav;
                 }
-            } else {
-                mav = new ModelAndView("index");
-                return mav;
             }
         } catch (SQLException ex) {
             Logger.getLogger(UserController.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(UserController.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (Exception ex) {
+            Logger.getLogger(UserController.class.getName()).log(Level.SEVERE, null, ex);
         }
-
+        mav.setViewName("login");
         return mav;
     }
 }
