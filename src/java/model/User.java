@@ -9,18 +9,17 @@ package model;
  *
  * @author My Computer
  */
-public class User 
-{
-private int userId;    
-private String userName;
-private String department;
-private String role;
-private String address;
-private String email;
-private int isActive;
-private String createdDate;
-private String updatedDate;
+public class User {
 
+    private int userId;
+    private String userName;
+    private String department;
+    private String role;
+    private String address;
+    private String email;
+    private int isActive;
+    private String createdDate;
+    private String updatedDate;
 
     public int getUserId() {
         return userId;
@@ -93,6 +92,5 @@ private String updatedDate;
     public void setUpdatedDate(String updatedDate) {
         this.updatedDate = updatedDate;
     }
-    
 
 }

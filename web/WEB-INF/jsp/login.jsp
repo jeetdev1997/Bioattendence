@@ -30,7 +30,7 @@
                             </tr>
                             <tr>
                                 <td>
-                                  Password : 
+                                    Password : 
                                 </td>
                                 <td>
                                     <input type="password" name="password" required/>
@@ -41,7 +41,7 @@
                                     <input type="submit" value="LogIn"/>
                                     <input type="reset" value="Clear"/>
                                 </td>
-                                
+
                             </tr>
                         </table>
                     </td>

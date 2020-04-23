@@ -15,10 +15,10 @@
         <table border width="100px" widht="100px">
             <tr>
                 <td>
-                   UserName ${user.userName}
+                    UserName ${user.userName}
                 </td>
                 <td>
-                   UserId ${userid}
+                    UserId ${userid}
                 </td>
                 <td>
                     <form action="http://localhost:8084/BiomatricsAttendenceSystem/admin/adduser.htm" method="post">
@@ -26,13 +26,13 @@
                     </form>
                 </td>
                 <td>
-                     <form action="http://localhost:8084/BiomatricsAttendenceSystem/admin/viewlist.htm" method="post">
+                    <form action="http://localhost:8084/BiomatricsAttendenceSystem/admin/viewlist.htm" method="post">
                         <input type="submit" value="ViewList"/>
                     </form> 
                 </td>
             </tr>
             <tr>
-                
+
             </tr>
         </table>
     </body>

@@ -35,7 +35,7 @@
     <bean name="indexController"
           class="org.springframework.web.servlet.mvc.ParameterizableViewController"
           p:viewName="index" />
-    <bean name="c" class="controller.BiomatricsController"/>
+    <bean name="c" class="controller.UserController"/>
     <bean name="admin" class="controller.AdminController"/>
 
 </beans>

@@ -12,6 +12,8 @@
         <title>JSP Page</title>
     </head>
     <body>
-        <h1>Delete</h1>
+        <%
+            response.sendRedirect("http://localhost:8084/BiomatricsAttendenceSystem/admin/viewlist.htm");
+        %>
     </body>
 </html>

@@ -12,21 +12,21 @@ import java.util.Date;
  *
  * @author My Computer
  */
-public class AddUser
-{
- private String firstName;
- private String lastName;
- private int deptId;
- private int roleId;
- private String address;
- private String email;
- private int isActive;
- private String createdDate;
- private String updatedDate;
+public class AddUser {
+
+    private String firstName;
+    private String lastName;
+    private int deptId;
+    private int roleId;
+    private String address;
+    private String email;
+    private int isActive;
+    private String createdDate;
+    private String updatedDate;
 // private String role;
 // private String deptName;
- private String userName;
- private String password;
+    private String userName;
+    private String password;
 
     public String getUserName() {
         return userName;
@@ -47,19 +47,15 @@ public class AddUser
 //    public String getDeptName() {
 //        return deptName;
 //    }
-
 //    public void setDeptName(String deptName) {
 //        this.deptName = deptName;
 //    }
-
 //    public String getRole() {
 //        return role;
 //    }
-
 //    public void setRole(String role) {
 //        this.role = role;
 //    }
-
     public String getFirstName() {
         return firstName;
     }
@@ -131,5 +127,5 @@ public class AddUser
     public void setUpdatedDate(String updatedDate) {
         this.updatedDate = updatedDate;
     }
- 
+
 }

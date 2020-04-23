@@ -10,16 +10,14 @@ import java.util.logging.Logger;
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 /**
  *
  * @author My Computer
  */
-public class AccessValidate
-{
- private String userName;
- private String password;
- 
+public class AccessValidate {
+
+    private String userName;
+    private String password;
 
     public String getUserName() {
         return userName;
