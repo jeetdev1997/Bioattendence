@@ -170,17 +170,17 @@ public class AttendenceSystemDb {
         }
     }
 
-    public static boolean isPresent(String firstName, String lastName, String email) {
+    public static boolean isPresent(AddUser addUser) {
         ResultSet resultRecord = null;
         try {
-            String string = "SELECT firstname,lastname,email from user";
+            String string = "SELECT firstname,lastname,email from users";
             statement = connection.createStatement();
             resultRecord = statement.executeQuery(string);
             while (resultRecord.next()) {
                 String fName = resultRecord.getString("firstname");
                 String lName = resultRecord.getString("lastname");
                 String emailId = resultRecord.getString("email");
-                if (firstName.equals(fName) && lastName.equals(lName) && email.equals(emailId)) {
+                if (addUser.getFirstName().equalsIgnoreCase(fName) && addUser.getLastName().equalsIgnoreCase(lName) && addUser.getEmail().equalsIgnoreCase(emailId)) {
                     return true;
                 }
             }

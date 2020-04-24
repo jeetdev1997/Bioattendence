@@ -10,15 +10,43 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>JSP Page</title>
+        <style>
+     .Row
+    {
+        display: table-row;
+        width: 100p;
+    }
+    .Cell
+    {
+        display: table-cell;
+        border: solid;
+        border-width: thin;
+        padding-left: 5px;
+        padding-right: 5px;
+    }
+    .fixed-header, .fixed-footer{
+        width: 100%;
+        position: fixed;        
+        background: #333;
+        padding: 15px 0;
+        color: #fff;
+    }
+    .fixed-header{
+        top: 0;
+    }
+    .fixed-footer{
+        bottom: 0;
+    }  
+        </style>
     </head>
     <body>
-        <table border width="100px" widht="100px">
+    <center><table border width="100px" cellspacing="0" cellpadding="0" class="Row">
             <tr>
                 <td>
                     UserName ${user.userName}
                 </td>
                 <td>
-                    UserId ${userid}
+                     UserName ${user.userName}
                 </td>
                 <td>
                     <form action="http://localhost:8084/BiomatricsAttendenceSystem/admin/adduser.htm" method="post">
@@ -31,9 +59,7 @@
                     </form> 
                 </td>
             </tr>
-            <tr>
-
-            </tr>
         </table>
+                </center>
     </body>
 </html>

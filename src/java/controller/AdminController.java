@@ -5,6 +5,9 @@
  */
 package controller;
 
+import com.junkie.db.DatabaseHelper;
+import com.junkie.dto.LoginDTO;
+import com.junkie.dto.UserDTO;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -35,78 +38,32 @@ public class AdminController {
     }
 
     @RequestMapping("viewlist")
-    public ModelAndView viewList() {
-        ArrayList<User> userList = new ArrayList<>();
+    public ModelAndView viewList() throws SQLException, ClassNotFoundException {
+        ArrayList<UserDTO> userList = new ArrayList<>();
         ModelAndView mav = new ModelAndView("viewlist");
-        String sqlViewList = "SELECT * from user";
-
-        try {
-
-            resultSet = AttendenceSystemDb.selectRecord(sqlViewList);
-            while (resultSet.next()) {
-                User user = new User();
-                user.setUserId(resultSet.getInt("userid"));
-                user.setAddress(resultSet.getString("address"));
-                user.setEmail(resultSet.getString("email"));
-                user.setIsActive(resultSet.getInt("isActive"));
-                user.setCreatedDate(resultSet.getString("createddate"));
-                user.setUpdatedDate(resultSet.getString("updateddate"));
-                ResultSet userName = AttendenceSystemDb.selectUserName(resultSet.getInt("userid"));
-                while (userName.next()) {
-                    user.setUserName(userName.getString("username"));
-                }
-                ResultSet role = AttendenceSystemDb.selectRole(resultSet.getInt("roleid"));
-                while (role.next()) {
-                    user.setRole(role.getString("role"));
-                }
-                ResultSet deptName = AttendenceSystemDb.selectDepartment(resultSet.getInt("departmentid"));
-                while (deptName.next()) {
-                    user.setDepartment(deptName.getString("name"));
-                }
-                userList.add(user);
-            }
-            mav.addObject("list", userList);
-
-        } catch (SQLException ex) {
-            Logger.getLogger(AdminController.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        userList = DatabaseHelper.getUsers();
+        mav.addObject("list", userList);
         return mav;
     }
 
     @RequestMapping("delete.htm")
-    public ModelAndView delete(@RequestParam int userId, int isActive) {
+    public ModelAndView delete(@RequestParam int userId, int isActive) throws SQLException, ClassNotFoundException {
         ModelAndView mav = new ModelAndView("delete");
-        
+        DatabaseHelper.updateUsers(userId);
+
         return mav;
     }
 
     @RequestMapping("add.htm")
-    public ModelAndView add(@ModelAttribute AddUser addUser) {
+    public ModelAndView add(@ModelAttribute AddUser addUser) throws Exception {
         ModelAndView mav = new ModelAndView("adduser");
-        String firstName = addUser.getFirstName();
-        String lastName = addUser.getLastName();
-        int deptId = addUser.getDeptId();
-        int roleId = addUser.getRoleId();
-        String address = addUser.getAddress();
-        String email = addUser.getEmail();
-        int isActive = addUser.getIsActive();
-        String createdDate = addUser.getCreatedDate();
-        String updatedDate = addUser.getUpdatedDate();
-        String userName = addUser.getUserName();
-        String password = addUser.getPassword();
-        boolean isPresent = AttendenceSystemDb.isPresent(firstName, lastName, email);
+        boolean isPresent = AttendenceSystemDb.isPresent(addUser);
         if (!isPresent) {
-            AttendenceSystemDb.insertUser(null, firstName, lastName, deptId, roleId, address, email, isActive, createdDate, updatedDate);
-            ResultSet userId = AttendenceSystemDb.selectUserId(userName);
-            try {
-                while (userId.next()) {
-                    int id = userId.getInt("userid");
-                    AttendenceSystemDb.insertLogIn(id, password, userName);
-
-                }
-            } catch (SQLException ex) {
-                Logger.getLogger(AdminController.class.getName()).log(Level.SEVERE, null, ex);
-            }
+            DatabaseHelper.insertUsers(addUser);
+            LoginDTO loginDTO = new LoginDTO();
+            loginDTO.setPassword(addUser.getPassword());
+            loginDTO.setUsername(addUser.getUserName());
+            DatabaseHelper.insertlogIn(loginDTO, addUser.getEmail());
         }
         return mav;
     }
