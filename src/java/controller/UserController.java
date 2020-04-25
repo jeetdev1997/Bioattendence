@@ -12,6 +12,8 @@ import com.junkie.dto.UserDTO;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import model.AccessValidate;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -38,9 +40,7 @@ public class UserController {
     public ModelAndView login(@ModelAttribute AccessValidate accessValidate) {
         ModelAndView mav = new ModelAndView();
         String userName = accessValidate.getUserName();
-        System.out.println("userName = " + userName);
         String password = accessValidate.getPassword();
-        System.out.println("password = " + password);
         try {
             LoginDTO loginDTO = DatabaseHelper.getLoginUser(userName, password);
             if (loginDTO != null & loginDTO.getUserId() != 0) {
@@ -65,6 +65,14 @@ public class UserController {
             Logger.getLogger(UserController.class.getName()).log(Level.SEVERE, null, ex);
         }
         mav.setViewName("login");
+        return mav;
+    }
+    @RequestMapping("logout.htm")
+    public ModelAndView logout(HttpServletRequest request,HttpServletResponse response)
+    {
+        ModelAndView mav =new ModelAndView();
+        mav.setViewName("login");
+        request.getSession().invalidate();
         return mav;
     }
 }

@@ -5,20 +5,22 @@
 --%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<jsp:include page="tabledesign.jsp" />
+ <jsp:include page="header.jsp" /> 
+       <jsp:include page="footer.jsp" /> 
+        <jsp:include page="header.jsp" /> 
+       <jsp:include page="footer.jsp" /> 
 <!DOCTYPE html>
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <style>
-            .hide{visibility: hidden}
-            .selected
-            {
-                background-color: #cccccc;
-            }
-            tr{cursor: pointer; transition: all .25s ease-in-out}
+           
         </style>
     </head>
     <body>
+        <div class="fixed-header"> <center><b>Biomatric Attendance System</b></center></div>
+        <div>
     <center>
         <table id="table" border cellpadding="0" cellspacing="0">
             <tr>
@@ -48,14 +50,15 @@
             </c:forEach>
         </table>
     </center>
+            </div>
     <p></p>
     <form action="http://localhost:8084/BiomatricsAttendenceSystem/admin/delete.htm" method="post">
         <div>
             <center>
                 <input type="text" id="userid" name="userId" class="hide" />
                 <input type="text" id="isactive" name="isActive" class="hide"/>
-                <input type="submit" value="DeleteEmployee" align="left"/> &nbsp;
-                <input type="button" value="ViewAttendence" align="left"/>
+                <input type="submit" value="DeleteEmployee" align="right"/> &nbsp;
+                <input type="button" value="ViewAttendence" align="right"/>
             </center>
         </div>
     </form>
@@ -72,6 +75,7 @@
                         table.rows[index].classList.toggle("selected");
                         document.getElementById("userid").value = this.cells[0].innerHTML;
                         document.getElementById("isactive").value = this.cells[6].innerHTML;
+                        
 
                     }
                     index = this.rowIndex;
@@ -83,5 +87,7 @@
         selectedRow();
 
     </script>
+    
+     <div class="footer"> <center>@ Copyright...</center></div>
 </body>
 </html>

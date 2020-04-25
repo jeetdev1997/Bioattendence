@@ -30,6 +30,7 @@
     }
     .fixed-header{
         top: 0;
+        left: 0;
     }
     .fixed-footer{
         bottom: 0;
@@ -43,6 +44,10 @@
     }
     .container p{
         line-height: 200px; /* Create scrollbar to test positioning */
+    }
+    body
+    {
+       
     }
 </style>
     </head>
