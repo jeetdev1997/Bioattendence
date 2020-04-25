@@ -11,15 +11,25 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Upload view</title>
+        <link href="<c:url value="/resources/css/upload-file.css" />" rel="stylesheet">
     </head>
     <body>
         <jsp:include page="header.jsp" />
         <div>
             <center>
-                <form action="uploadAttendance.htm" method="POST" enctype="multipart/form-data">
-                    <input type="file" name="file" id="file"/>
-                    <input type="submit" value="uploadAttendance"/>
-                </form> 
+                <div class="container">
+                    <form action="uploadAttendance.htm" method="POST" enctype="multipart/form-data">
+                        <div class="file-upload-wrapper" data-text="Select your file!">
+                            <input name="file" type="file" class="file-upload-field" value="">
+                        </div>
+                        <input type="submit" value="Submit"/>
+                    </form>
+                    <div>
+                        <span>
+                            ${message}
+                        </span>
+                    </div>
+                </div>
             </center>
         </div>
         <jsp:include page="footer.jsp" />

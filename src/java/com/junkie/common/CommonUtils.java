@@ -31,26 +31,24 @@ public class CommonUtils {
 
     public static void writeDataIntoFile(List<String> list) throws IOException {
         File outputFile = new File("C:\\Users\\ashish.yetre\\Documents\\NetBeansProjects\\Bioattendence\\files\\generatedFile.txt");
-        if (outputFile.createNewFile()) {
-            Files.write(outputFile.toPath(), (Iterable<String>) list::iterator);
-        }
-
+        outputFile.createNewFile();
+        Files.write(outputFile.toPath(), (Iterable<String>) list::iterator);
     }
 
     public static void generateRandomTimeStamp(String empId) throws IOException {
-        LocalDate firstDayOfMonth = LocalDate.of(2020, Month.MARCH, 1);
+        LocalDate firstDayOfMonth = LocalDate.of(2020, Month.APRIL, 1);
         LocalDateTime atTime = firstDayOfMonth.atTime(11, 01);
         LocalDateTime outTime = firstDayOfMonth.atTime(18, 01);
         List<String> list = new ArrayList();
         for (int i = 1; i < 31; i++) {
             long in = atTime.plusDays(i).atZone(ZoneId.of("Asia/Kolkata")).toEpochSecond();
-            long out= outTime.plusDays(i).atZone(ZoneId.of("Asia/Kolkata")).toEpochSecond();
-            list.add(empId+","+in +","+out);
+            long out = outTime.plusDays(i).atZone(ZoneId.of("Asia/Kolkata")).toEpochSecond();
+            list.add(empId + "," + in + "," + out);
         }
         writeDataIntoFile(list);
     }
 
     public static void main(String[] args) throws IOException {
-        generateRandomTimeStamp("2");
+        generateRandomTimeStamp("3");
     }
 }

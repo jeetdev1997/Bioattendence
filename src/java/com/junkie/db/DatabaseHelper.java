@@ -240,7 +240,7 @@ public class DatabaseHelper {
         try (Connection connection = SQLConnectionHelper.getNewConnection();) {
             Statement statement = connection.createStatement();
             String sqlQuery = SELECT_ATTENDANCE_CURRENT_DATE_SQL.replaceFirst("[?]", "" + userId);
-            LocalDate withDayOfMonth = LocalDate.now().withDayOfMonth(1).minusMonths(1);
+            LocalDate withDayOfMonth = LocalDate.now().withDayOfMonth(1);
             sqlQuery = sqlQuery.replaceFirst("[?]", withDayOfMonth.toString());
             System.out.println("SQL :"+sqlQuery);
             ResultSet resultSet = statement.executeQuery(sqlQuery);

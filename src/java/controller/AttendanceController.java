@@ -9,7 +9,6 @@ import com.junkie.service.AttendanceService;
 import com.junkie.service.IAttendanceService;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -35,15 +34,19 @@ public class AttendanceController {
     @RequestMapping(value = "uploadAttendance",method = RequestMethod.POST)
     public ModelAndView uploadAttendance(@RequestParam("file") CommonsMultipartFile file) {
         System.out.println("file :"+file);
+        ModelAndView modelAndView=new ModelAndView();
         if(file!=null){
             String filename = file.getOriginalFilename();
             System.out.println("fileName : " + filename);     
             try {
                 attendanceService.parseAndSaveAttendance(file);
+                modelAndView.addObject("message",file.getOriginalFilename() + " uploaded successfully.");
             } catch (Exception ex) {
                 Logger.getLogger(AttendanceController.class.getName()).log(Level.SEVERE, null, ex);
+                modelAndView.addObject("message",file.getOriginalFilename() + " failed to upload.");
             }
         }
-         return new ModelAndView("uploadView");
+        modelAndView.setViewName("uploadView");
+         return modelAndView;
     }
 }
