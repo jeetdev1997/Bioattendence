@@ -12,7 +12,7 @@ package com.junkie.dto;
 public class UserDTO {
 
     private int userId;
-    private String userName;
+    private String name;
     private String role;
     private String address;
     private String email;
@@ -30,7 +30,6 @@ public class UserDTO {
 //    public void setDepartmentName(String departmentName) {
 //        this.departmentName = departmentName;
 //    }
-
     public String getRole() {
         return role;
     }
@@ -63,12 +62,12 @@ public class UserDTO {
         this.userId = userId;
     }
 
-    public String getUserName() {
-        return userName;
+    public String getName() {
+        return name;
     }
 
-    public void setUserName(String userName) {
-        this.userName = userName;
+    public void setName(String userName) {
+        this.name = userName;
     }
 
     public String getAddress() {

@@ -28,7 +28,7 @@ import model.AddUser;
 public class DatabaseHelper {
 
     private static final String INSERT_ATTENDANCE_SQL = "INSERT INTO userAttendance"
-            + "(EMP_ID, in_time, out_time) VALUES (?,?,?,?)";
+            + " (userid,attended_date,in_time, out_time) VALUES (?,?,?,?)";
     private static final String SELECT_LOGIN_SQL = "select * from login where username = ? and password = ?";
     private static final String SELECT_USER_SQL = "select * from users where userId = ?";
     private static final String SELECT_ROLE_SQL = "SELECT * FROM roles WHERE id=?";
@@ -44,10 +44,10 @@ public class DatabaseHelper {
         try (Connection connection = SQLConnectionHelper.getNewConnection();) {
             PreparedStatement prepareStatement = connection.prepareStatement(INSERT_ATTENDANCE_SQL);
             for (AttendanceDTO attendanceDTO : attendanceDTOList) {
-                prepareStatement.setLong(0, new Integer(attendanceDTO.getEmpId()));
-                prepareStatement.setDate(1, (Date) attendanceDTO.getAttendedDate());
-                prepareStatement.setDate(2, (Date) attendanceDTO.getInTime());
-                prepareStatement.setDate(3, (Date) attendanceDTO.getOutTime());
+                prepareStatement.setInt(1, new Integer(attendanceDTO.getEmpId()));
+                prepareStatement.setDate(2, attendanceDTO.getAttendedDate());
+                prepareStatement.setDate(3, attendanceDTO.getInTime());
+                prepareStatement.setDate(4, attendanceDTO.getOutTime());
                 prepareStatement.addBatch();
             }
             int[] executeBatch = prepareStatement.executeBatch();
@@ -183,7 +183,7 @@ public class DatabaseHelper {
             while (resultSet.next()) {
                 UserDTO user = new UserDTO();
                 user.setUserId(resultSet.getInt("userid"));
-                user.setUserName(getUserName(resultSet.getInt("userid")));
+                user.setName((resultSet.getString("firstname")+" "+resultSet.getString("lastname")));
                 user.setAddress(resultSet.getString("address"));
                 user.setEmail(resultSet.getString("email"));
                 user.setRoles(getRoleById(resultSet.getInt("roleId")));
@@ -191,9 +191,8 @@ public class DatabaseHelper {
                 user.setUpdatedDate(resultSet.getString("updateddate"));
                 user.setIsActive(resultSet.getInt("isActive"));
                 user.setCreatedDate(resultSet.getString("createddate"));
-                if(resultSet.getInt("isActive")!=1)
-                {
-                userDtoList.add(user);
+                if (user.getIsActive() == 1) {
+                    userDtoList.add(user);
                 }
             }
             return userDtoList;
@@ -216,17 +215,16 @@ public class DatabaseHelper {
         }
         return userName;
     }
-    
-    public static void updateUsers(int userId) throws SQLException , ClassNotFoundException
-    {
-    try (Connection connection = SQLConnectionHelper.getNewConnection();) {
+
+    public static void updateUsers(int userId) throws SQLException, ClassNotFoundException {
+        try (Connection connection = SQLConnectionHelper.getNewConnection();) {
             Statement statement = connection.createStatement();
             String sqlQuery = UPDATE_USER_SQL.replaceFirst("[?]", "" + userId);
             int resultSet = statement.executeUpdate(sqlQuery);
 
         } catch (Exception e) {
             throw e;
-        }    
+        }
     }
 
 }

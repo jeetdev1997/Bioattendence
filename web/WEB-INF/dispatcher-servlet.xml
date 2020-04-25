@@ -23,7 +23,7 @@
             </props>
         </property>
     </bean>
-
+<bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver" />
     <bean id="viewResolver"
           class="org.springframework.web.servlet.view.InternalResourceViewResolver"
           p:prefix="/WEB-INF/jsp/"
@@ -37,6 +37,6 @@
           p:viewName="index" />
     <bean name="c" class="controller.UserController"/>
     <bean name="admin" class="controller.AdminController"/>
-    <bean name="attendance" class="controller.AttendanceUploadController"/>
+    <bean name="attendance" class="controller.AttendanceController"/>
 
 </beans>

@@ -27,8 +27,7 @@ updateddate date,
 FOREIGN KEY (departmentId) REFERENCES department(id),
 FOREIGN KEY (roleId) REFERENCES roles(id)
 );
-insert into users (firstname,lastname,departmentid,roleid,address,email,isActive,createddate,updateddate) values
-('Ashish','Yetre',1,1,'home','artificialgenius.ashyz@gmail.com',1,null,null);
+insert into users (firstname,lastname,departmentid,roleid,address,email,isActive,createddate,updateddate) values ('Ashish','Yetre',1,1,'home','artificialgenius.ashyz@gmail.com',1,null,null);
 Create table department(
 id INT AUTO_INCREMENT PRIMARY KEY,
 name text,
@@ -55,13 +54,26 @@ username text,
 FOREIGN KEY (userid) REFERENCES users(userid)
 );
 insert into login (userid,password,username) values (1,'junkie','root');
+
+drop table userAttendance ;
 create table userAttendance (
-userid INT  PRIMARY KEY,
-attendedDate date,
-inTime date,
-outTime date,
+id int AUTO_INCREMENT PRIMARY KEY,
+userid int,
+attended_date date,
+in_time date,
+out_time date,
 FOREIGN KEY (userid) REFERENCES users(userid)
 );
+select * from userAttendance ;
 
-
-
+insert into department (name,isActive,createdate,updatedate) values ('Administration',1,null,null);
+insert into department (name,isActive,createdate,updatedate) values ('Human Resource',1,null,null);
+insert into department (name,isActive,createdate,updatedate) values ('Software Developer',1,null,null);
+select * from department ;
+insert into users (firstname,lastname,departmentid,roleid,address,email,isActive,createddate,updateddate) values ('Ashy','Yetre',4,2,'home','artificialgenius.ashyz@gmail.com',1,null,null);
+insert into users (firstname,lastname,departmentid,roleid,address,email,isActive,createddate,updateddate) values ('Rakesh','Thakre',4,2,'home','artificialgenius.ashyz@gmail.com',1,null,null);
+insert into users (firstname,lastname,departmentid,roleid,address,email,isActive,createddate,updateddate) values ('Ramesh','Maher',4,2,'home','artificialgenius.ashyz@gmail.com',1,null,null);
+insert into users (firstname,lastname,departmentid,roleid,address,email,isActive,createddate,updateddate) values ('Vinay','Khanna',4,2,'home','artificialgenius.ashyz@gmail.com',1,null,null);
+insert into users (firstname,lastname,departmentid,roleid,address,email,isActive,createddate,updateddate) values ('Farhan','Khan',4,2,'home','artificialgenius.ashyz@gmail.com',1,null,null);
+insert into users (firstname,lastname,departmentid,roleid,address,email,isActive,createddate,updateddate) values ('Suresh','Sharma',4,2,'home','artificialgenius.ashyz@gmail.com',1,null,null);
+select * from users;

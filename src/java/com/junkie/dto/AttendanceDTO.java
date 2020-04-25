@@ -50,4 +50,9 @@ public class AttendanceDTO {
         this.outTime = outTime;
     }
 
+    @Override
+    public String toString() {
+        return "{"+empId + " "+ inTime + " "+outTime+"}" ; //To change body of generated methods, choose Tools | Templates.
+    }
+
 }

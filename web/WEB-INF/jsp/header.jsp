@@ -9,49 +9,34 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>JSP Page</title>
         <style>
-    /* Add some padding on document's body to prevent the content
-    to go underneath the header and footer */
-    body{        
-        padding-top: 60px;
-        padding-bottom: 40px;
-    }
-    .container{
-        width: 80%;
-        margin: 0 auto; /* Center the DIV horizontally */
-    }
-    .fixed-header, .fixed-footer{
-        width: 100%;
-        position: fixed;        
-        background: #333;
-        padding: 10px 0;
-        color: #fff;
-    }
-    .fixed-header{
-        top: 0;
-        left: 0;
-    }
-    .fixed-footer{
-        bottom: 0;
-    }    
-    /* Some more styles to beutify this example */
-    nav a{
-        color: #fff;
-        text-decoration: none;
-        padding: 7px 25px;
-        display: inline-block;
-    }
-    .container p{
-        line-height: 200px; /* Create scrollbar to test positioning */
-    }
-    body
-    {
-       
-    }
-</style>
+            *, *:before, *:after {
+                box-sizing: border-box;
+            }
+
+            body {
+                margin: 10px;
+                font-family: 'Open Sans', 'sans-serif';
+                background-color: #fff;
+                color: #444;
+            }
+
+            .wrapper > * {
+                background-color: #444;
+                color: #fff;
+                border-radius: 5px;
+                padding: 15px;
+                font-size: 150%;
+                /* needed for the floated layout*/
+                margin-bottom: 20px;
+            }
+        </style>
     </head>
     <body>
-       
+        <div class="wrapper">
+            <center> 
+                <header class="header">Biomatric Attendance System</header>
+            </center>
+        </div>
     </body>
 </html>

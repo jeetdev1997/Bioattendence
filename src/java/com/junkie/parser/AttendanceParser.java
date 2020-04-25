@@ -12,7 +12,11 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.sql.Date;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import org.springframework.web.multipart.MultipartFile;
 
 /**
@@ -41,26 +45,25 @@ public class AttendanceParser {
 
     private List<String> getAllContentFromFile() throws IOException {
         InputStream inputStream = file.getInputStream();
-        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
-        List<String> readAllLines = new ArrayList();
-        while (bufferedReader.read() != -1) {
-            readAllLines.add(bufferedReader.readLine());
+        try (BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));) {
+            Stream<String> lines = bufferedReader.lines();
+            return lines.collect(Collectors.toList());
         }
-
-        return readAllLines;
     }
 
     private void readAttendance(List<String> allContentFromFile) {
-        String headers = allContentFromFile.get(0);
-        String[] values = headers.split(COMMO_SEPARATOR);
-        AttendanceDTO attendanceDTO = new AttendanceDTO();
         attendanceDTOList = new ArrayList();
         for (int i = 1; i < allContentFromFile.size(); i++) {
-            attendanceDTO.setEmpId(values[0]);
-            attendanceDTO.setAttendedDate(new Date(new Long(values[1])));
-            attendanceDTO.setInTime(new Date(new Long(values[1])));
-            attendanceDTO.setOutTime(new Date(new Long(values[2])));
-            attendanceDTOList.add(attendanceDTO);
+            String[] values = allContentFromFile.get(i).split(COMMO_SEPARATOR);
+            if (values.length == 3) {
+                AttendanceDTO attendanceDTO = new AttendanceDTO();
+                System.out.println("values: " + Arrays.toString(values));
+                attendanceDTO.setEmpId(values[0].trim());
+                attendanceDTO.setAttendedDate(new Date(new Long(values[1])));
+                attendanceDTO.setInTime(new Date(new Long(values[1])));
+                attendanceDTO.setOutTime(new Date(new Long(values[2])));
+                attendanceDTOList.add(attendanceDTO);
+            }
         }
     }
 

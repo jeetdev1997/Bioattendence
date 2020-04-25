@@ -5,89 +5,51 @@
 --%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<jsp:include page="tabledesign.jsp" />
- <jsp:include page="header.jsp" /> 
-       <jsp:include page="footer.jsp" /> 
-        <jsp:include page="header.jsp" /> 
-       <jsp:include page="footer.jsp" /> 
 <!DOCTYPE html>
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <link rel="stylesheet" href="css/normalize.css">
+        <link href='https://fonts.googleapis.com/css?family=Nunito:400,300' rel='stylesheet' type='text/css'>
+        <link href="<c:url value="/resources/css/table.css" />" rel="stylesheet">
         <style>
-           
+
         </style>
     </head>
     <body>
-        <div class="fixed-header"> <center><b>Biomatric Attendance System</b></center></div>
+        <jsp:include page="header.jsp" /> 
         <div>
-    <center>
-        <table id="table" border cellpadding="0" cellspacing="0">
-            <tr>
-                <th>UserId</th>
-                <th>UserName</th>
-                <th>Department</th>
-                <th>Role</th>
-                <th>Address</th>
-                <th>Email</th>
-                <th>IsActive</th>
-                <th>CreatedDate</th>
-                <th>UpdatedDate</th>
-            </tr>
 
-            <c:forEach items="${list}" var="userList">
-                <tr onclick="selcetRow()">
-                    <td align="center">${userList.userId}</td>
-                    <td align="center">${userList.userName}</td>
-                    <td align="center">${userList.department}</td>
-                    <td align="center">${userList.role}</td>
-                    <td align="center">${userList.address}</td>
-                    <td align="center">${userList.email}</td>
-                    <td align="center">${userList.isActive}</td>
-                    <td align="center">${userList.createdDate}</td>
-                    <td align="center">${userList.updatedDate}</td>
-                </tr>
-            </c:forEach>
-        </table>
-    </center>
+            <div>
+                <table>
+                    <caption>Employee Information</caption>
+                    <thead>
+                        <tr>
+                            <th scope="col">Name</th>
+                            <th scope="col">Department</th>
+                            <th scope="col">Role</th>
+                            <th scope="col">Address</th>
+                            <th scope="col">Email</th>
+                            <th scope="col">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <c:forEach items="${list}" var="userList">
+                            <tr>
+                                <td scope="row">${userList.name}</td>
+                                <td align="center">${userList.department}</td>
+                                <td align="center">${userList.role}</td>
+                                <td align="center">${userList.address}</td>
+                                <td align="center">${userList.email}</td>
+                                <td align="center">
+                                    <a href="delete.htm?empId=${userList.userId}" >Delete Employee</a>
+                                    <a href="viewAttendance.htm?empId=${userList.userId}">View Attendance</a>
+                                </td>
+                            </tr>
+                        </c:forEach>
+                    </tbody>
+                </table>
             </div>
-    <p></p>
-    <form action="http://localhost:8084/BiomatricsAttendenceSystem/admin/delete.htm" method="post">
-        <div>
-            <center>
-                <input type="text" id="userid" name="userId" class="hide" />
-                <input type="text" id="isactive" name="isActive" class="hide"/>
-                <input type="submit" value="DeleteEmployee" align="right"/> &nbsp;
-                <input type="button" value="ViewAttendence" align="right"/>
-            </center>
-        </div>
-    </form>
-
-    <script>
-        function selectedRow()
-        {
-            var index, table = document.getElementById("table");
-            for (var i = 1; i < table.rows.length; i++) {
-
-                table.rows[i].onclick = function ()
-                {
-                    if (typeof index !== "undefined") {
-                        table.rows[index].classList.toggle("selected");
-                        document.getElementById("userid").value = this.cells[0].innerHTML;
-                        document.getElementById("isactive").value = this.cells[6].innerHTML;
-                        
-
-                    }
-                    index = this.rowIndex;
-                    this.classList.toggle("selected");
-                    console.log(index);
-                };
-            }
-        }
-        selectedRow();
-
-    </script>
-    
-     <div class="footer"> <center>@ Copyright...</center></div>
-</body>
+            <jsp:include page="footer.jsp" /> 
+    </body>
 </html>

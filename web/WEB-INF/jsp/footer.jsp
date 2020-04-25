@@ -1,6 +1,6 @@
 <%-- 
-    Document   : footer
-    Created on : Apr 24, 2020, 4:01:28 AM
+    Document   : header
+    Created on : Apr 23, 2020, 8:35:19 PM
     Author     : My Computer
 --%>
 
@@ -9,20 +9,37 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-       <style>
-.footer {
-   position: fixed;
-   left: 0;
-   bottom: 0;
-   width: 100%;
-   background-color:#333;
-   color: white;
-   text-align: center;
-   padding: 10px 0;
-}
-</style>
+        <style>
+            *, *:before, *:after {
+                box-sizing: border-box;
+            }
+
+            body {
+                margin: 10px;
+                font-family: 'Open Sans', 'sans-serif';
+                background-color: #fff;
+                color: #444;
+            }
+
+            .wrapper-footer > * {
+                background-color: #444;
+                color: #fff;
+                border-radius: 5px;
+                padding: 15px;
+                font-size: 150%;
+                position: fixed;
+                bottom: 0;
+                width: 99%;
+                /* needed for the floated layout*/
+                margin-bottom: 20px;
+            }
+        </style>
     </head>
     <body>
-        
+        <div class="wrapper-footer">
+            <center> 
+                <header class="footer">Copyright</header>
+            </center>
+        </div>
     </body>
 </html>
