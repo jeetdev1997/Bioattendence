@@ -12,6 +12,7 @@
         <link rel="stylesheet" href="css/normalize.css">
         <link href='https://fonts.googleapis.com/css?family=Nunito:400,300' rel='stylesheet' type='text/css'>
         <link href="<c:url value="/resources/css/table.css" />" rel="stylesheet">
+        <link href="<c:url value="/resources/css/anchor-button.css" />" rel="stylesheet">
         <style>
 
         </style>
@@ -42,8 +43,13 @@
                                 <td align="center">${userList.address}</td>
                                 <td align="center">${userList.email}</td>
                                 <td align="center">
-                                    <a href="delete.htm?empId=${userList.userId}" >Delete Employee</a>
-                                    <a href="viewAttendance.htm?empId=${userList.userId}">View Attendance</a>
+
+                                    <span class="menu effect-02">
+                                        <ul>
+                                            <li><a href="delete.htm?empId=${userList.userId}">Delete</a></li>
+                                            <li><a href="viewAttendance.htm?empId=${userList.userId}">Show Attendance</a></li>
+                                        </ul>
+                                    </span>
                                 </td>
                             </tr>
                         </c:forEach>

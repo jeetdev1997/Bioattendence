@@ -1,0 +1,51 @@
+/*
+	NOTE:
+	This pen is an ongoing collection of hover ideas. Leave me a comment if you have any suggestions!
+*/
+
+/* BASE TEMPLATE STYLES ========== */
+@import url(https://fonts.googleapis.com/css?family=Raleway:300,700);
+
+
+/* PEN STYLES ========== */
+.menu,
+.menu .menu_title,
+.menu ul li a,
+.menu ul li a:after,
+.menu ul li a:before {
+	-webkit-transition: all 300ms ease-in-out;
+	transition: all 300ms ease-in-out;
+}
+.menu {
+	border-bottom: 1px solid rgba(0,0,0,.05);
+	border-top: 1px solid #fff;
+	margin: 0;
+	padding: 30px 0;
+}
+.menu:hover {
+	background: #fff;
+	border-bottom: 1px solid rgba(0,0,0,.2);
+}
+.menu ul {
+	display: block;
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+.menu ul li {
+	display: inline-block;
+}
+.menu ul li a {
+	color: #555;
+	display: block;
+	line-height: 30px;
+	padding: 0 20px;
+	text-decoration: none;
+}
+
+/* ----- EFFECT 02 - Shape Transform */
+	.menu.effect-02 ul li a:hover {
+		background: rgba(136,0,68,.2);
+		border-radius: 15px;
+	}
+
