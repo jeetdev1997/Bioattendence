@@ -8,8 +8,6 @@ package com.junkie.db;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
@@ -18,7 +16,7 @@ import java.util.logging.Logger;
 public class SQLConnectionHelper {
 
     private static final String JDBC_DRIVER = "com.mysql.jdbc.Driver";
-    private static final String JDBC_URL = "jdbc:mysql://localhost:3306/attendance_system_db";
+    private static final String JDBC_URL = "jdbc:mysql://localhost:3306/attendance_system_db?useSSL=false";
     private static final String USER = "root";
     private static final String PASSWORD = "root";
 

@@ -15,10 +15,56 @@ public class AttendanceDTO {
 
     private String empId;
     private Date attendedDate;
+    private String day;
+    private String inTimestamp;
+    private String outTimestamp;
+    private String formattedInTime;
+    private String formattedOutTime;
     private Date inTime;
     private Date outTime;
+
+    public String getFormattedInTime() {
+        return formattedInTime;
+    }
+
+    public void setFormattedInTime(String formattedInTime) {
+        this.formattedInTime = formattedInTime;
+    }
+
+    public String getFormattedOutTime() {
+        return formattedOutTime;
+    }
+
+    public void setFormattedOutTime(String formattedOutTime) {
+        this.formattedOutTime = formattedOutTime;
+    }
+
+    public String getDay() {
+        return day;
+    }
+
+    public String getInTimestamp() {
+        return inTimestamp;
+    }
+
+    public void setInTimestamp(String inTimestamp) {
+        this.inTimestamp = inTimestamp;
+    }
+
+    public String getOutTimestamp() {
+        return outTimestamp;
+    }
+
+    public void setOutTimestamp(String outTimestamp) {
+        this.outTimestamp = outTimestamp;
+    }
+
+    public void setDay(String day) {
+        this.day = day;
+    }
     
-     public Date getAttendedDate() {
+
+    public Date getAttendedDate() {
         return attendedDate;
     }
 
@@ -52,7 +98,7 @@ public class AttendanceDTO {
 
     @Override
     public String toString() {
-        return "{"+empId + " "+ inTime + " "+outTime+"}" ; //To change body of generated methods, choose Tools | Templates.
+        return "{" + empId + " " + inTime + " " + outTime + "}"; //To change body of generated methods, choose Tools | Templates.
     }
 
 }

@@ -16,9 +16,17 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.ZoneId;
+import java.time.ZoneOffset;
+import java.time.format.DateTimeFormatter;
+import java.time.format.FormatStyle;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Locale;
 import model.AddUser;
 
 /**
@@ -38,6 +46,7 @@ public class DatabaseHelper {
     private static final String SELECT_USERId_SQL = "SELECT * FROM users WHERE email=?";
     private static final String SELECT_USERS_SQL = "SELECT * FROM users";
     private static final String SELECT_USERNAME_SQL = "SELECT username FROM login WHERE userid=?";
+    private static final String SELECT_ATTENDANCE_CURRENT_DATE_SQL = "select * from userAttendance where userid = ? and attended_date between ? and CURDATE();";
     private static final String UPDATE_USER_SQL = "UPDATE users set isActive=1 WHERE userid=?";
 
     public static void insertUserAttendance(List<AttendanceDTO> attendanceDTOList) throws SQLException, Exception {
@@ -46,8 +55,8 @@ public class DatabaseHelper {
             for (AttendanceDTO attendanceDTO : attendanceDTOList) {
                 prepareStatement.setInt(1, new Integer(attendanceDTO.getEmpId()));
                 prepareStatement.setDate(2, attendanceDTO.getAttendedDate());
-                prepareStatement.setDate(3, attendanceDTO.getInTime());
-                prepareStatement.setDate(4, attendanceDTO.getOutTime());
+                prepareStatement.setString(3, attendanceDTO.getInTimestamp());
+                prepareStatement.setString(4, attendanceDTO.getOutTimestamp());
                 prepareStatement.addBatch();
             }
             int[] executeBatch = prepareStatement.executeBatch();
@@ -183,7 +192,7 @@ public class DatabaseHelper {
             while (resultSet.next()) {
                 UserDTO user = new UserDTO();
                 user.setUserId(resultSet.getInt("userid"));
-                user.setName((resultSet.getString("firstname")+" "+resultSet.getString("lastname")));
+                user.setName((resultSet.getString("firstname") + " " + resultSet.getString("lastname")));
                 user.setAddress(resultSet.getString("address"));
                 user.setEmail(resultSet.getString("email"));
                 user.setRoles(getRoleById(resultSet.getInt("roleId")));
@@ -222,6 +231,36 @@ public class DatabaseHelper {
             String sqlQuery = UPDATE_USER_SQL.replaceFirst("[?]", "" + userId);
             int resultSet = statement.executeUpdate(sqlQuery);
 
+        } catch (Exception e) {
+            throw e;
+        }
+    }
+
+    public static List<AttendanceDTO> getEmployeeAttendanceByEmpId(int userId) throws Exception {
+        try (Connection connection = SQLConnectionHelper.getNewConnection();) {
+            Statement statement = connection.createStatement();
+            String sqlQuery = SELECT_ATTENDANCE_CURRENT_DATE_SQL.replaceFirst("[?]", "" + userId);
+            LocalDate withDayOfMonth = LocalDate.now().withDayOfMonth(1).minusMonths(1);
+            sqlQuery = sqlQuery.replaceFirst("[?]", withDayOfMonth.toString());
+            System.out.println("SQL :"+sqlQuery);
+            ResultSet resultSet = statement.executeQuery(sqlQuery);
+            List<AttendanceDTO> attendanceDTOList = new ArrayList();
+            while (resultSet.next()) {
+                AttendanceDTO attendanceDTO = new AttendanceDTO();
+                Date attended_date = resultSet.getDate("attended_date");
+                attendanceDTO.setDay(attended_date.toLocalDate().getDayOfWeek().name());
+                attendanceDTO.setAttendedDate(attended_date);
+                String inTimestamp = resultSet.getString("in_time");
+                LocalDateTime ofEpochSecond = LocalDateTime.ofEpochSecond(Long.valueOf(inTimestamp), 1, ZoneOffset.UTC);
+                String formatInTime = ofEpochSecond.plusHours(5).plusMinutes(30).format(DateTimeFormatter.ofLocalizedTime(FormatStyle.SHORT));
+                attendanceDTO.setFormattedInTime(formatInTime);
+                String outTimestamp = resultSet.getString("out_time");
+                ofEpochSecond = LocalDateTime.ofEpochSecond(Long.valueOf(outTimestamp), 1, ZoneOffset.UTC);
+                String formatOutTime= ofEpochSecond.plusHours(5).plusMinutes(30).format(DateTimeFormatter.ofLocalizedTime(FormatStyle.SHORT));
+                attendanceDTO.setFormattedOutTime(formatOutTime);
+                attendanceDTOList.add(attendanceDTO);
+            }
+            return attendanceDTOList;
         } catch (Exception e) {
             throw e;
         }

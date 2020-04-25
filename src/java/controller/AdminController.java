@@ -6,17 +6,22 @@
 package controller;
 
 import com.junkie.db.DatabaseHelper;
+import com.junkie.dto.AttendanceDTO;
 import com.junkie.dto.LoginDTO;
+import com.junkie.dto.UserAttendanceDTO;
 import com.junkie.dto.UserDTO;
+import com.junkie.service.AttendanceService;
+import com.junkie.service.IAttendanceService;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import model.AddUser;
 import model.AttendenceSystemDb;
-import model.User;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -66,5 +71,22 @@ public class AdminController {
             DatabaseHelper.insertlogIn(loginDTO, addUser.getEmail());
         }
         return mav;
+    }
+    @RequestMapping("viewAttendance")
+    public ModelAndView attendanceView(@RequestParam("empId") String empId){
+        ModelAndView modelAndView = new ModelAndView();
+        if(!StringUtils.isEmpty(empId)){
+            IAttendanceService attendanceService = new AttendanceService();
+            try {
+                UserAttendanceDTO userAttendanceDTO = attendanceService.getEmployeeAttendance(empId);
+                modelAndView.addObject("userAttendance", userAttendanceDTO);
+                modelAndView.setViewName("userAttendanceView");
+            } catch (Exception ex) {
+                Logger.getLogger(AdminController.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }else{
+            modelAndView.setViewName("");
+        }
+        return modelAndView;
     }
 }

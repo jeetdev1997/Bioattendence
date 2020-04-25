@@ -5,6 +5,7 @@
  */
 package com.junkie.service;
 
+import com.junkie.dto.UserAttendanceDTO;
 import org.springframework.web.multipart.MultipartFile;
 
 /**
@@ -12,5 +13,8 @@ import org.springframework.web.multipart.MultipartFile;
  * @author ashish.yetre
  */
 public interface IAttendanceService {
+
     public void parseAndSaveAttendance(MultipartFile file) throws Exception;
+
+    public UserAttendanceDTO getEmployeeAttendance(String userId) throws Exception;
 }

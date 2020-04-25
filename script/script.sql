@@ -60,8 +60,8 @@ create table userAttendance (
 id int AUTO_INCREMENT PRIMARY KEY,
 userid int,
 attended_date date,
-in_time date,
-out_time date,
+in_time text,
+out_time text,
 FOREIGN KEY (userid) REFERENCES users(userid)
 );
 select * from userAttendance ;
@@ -77,3 +77,5 @@ insert into users (firstname,lastname,departmentid,roleid,address,email,isActive
 insert into users (firstname,lastname,departmentid,roleid,address,email,isActive,createddate,updateddate) values ('Farhan','Khan',4,2,'home','artificialgenius.ashyz@gmail.com',1,null,null);
 insert into users (firstname,lastname,departmentid,roleid,address,email,isActive,createddate,updateddate) values ('Suresh','Sharma',4,2,'home','artificialgenius.ashyz@gmail.com',1,null,null);
 select * from users;
+select * from userAttendance;
+select * from userAttendance where userid = 2 and attended_date between '1970-01-01' and CURDATE();

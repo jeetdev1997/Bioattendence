@@ -5,8 +5,11 @@
  */
 package com.junkie.service;
 
+import com.junkie.common.CommonUtils;
 import com.junkie.db.DatabaseHelper;
 import com.junkie.dto.AttendanceDTO;
+import com.junkie.dto.UserAttendanceDTO;
+import com.junkie.dto.UserDTO;
 import com.junkie.parser.AttendanceParser;
 import java.io.IOException;
 import java.sql.SQLException;
@@ -39,6 +42,17 @@ public class AttendanceService implements IAttendanceService {
         } catch (Exception ex) {
             Logger.getLogger(AttendanceService.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+
+    @Override
+    public UserAttendanceDTO getEmployeeAttendance(String userId) throws SQLException, ClassNotFoundException, Exception {
+        UserDTO user = DatabaseHelper.getUserById(new Integer(userId));
+        UserAttendanceDTO userAttendanceDTO = new UserAttendanceDTO();
+        userAttendanceDTO.setUser(user);
+        List<AttendanceDTO> employeeAttendanceList = DatabaseHelper.getEmployeeAttendanceByEmpId(user.getUserId());
+        CommonUtils.sortListByDate(employeeAttendanceList);
+        userAttendanceDTO.setAttendanceList(employeeAttendanceList);
+        return userAttendanceDTO;
     }
 
 }
