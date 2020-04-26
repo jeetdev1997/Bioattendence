@@ -41,7 +41,7 @@ input[type=submit] {
 }
 input[type=date] {
   width: 50%;
-  height: 10px;
+  height: 40px;
   /*background-color: #4CAF50;*/
   /*color: white;*/
   padding: 14px 20px;
@@ -98,7 +98,7 @@ input[type=submit]:hover {
 }
 
 .div {
-    width: 50%;
+    width: 60%;
     /*position: absolute;*/
     left: 180px;
   border-radius: 5px;
