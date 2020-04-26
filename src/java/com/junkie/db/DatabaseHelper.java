@@ -18,15 +18,12 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.time.ZoneId;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Locale;
 import model.AddUser;
 
 /**
@@ -75,8 +72,8 @@ public class DatabaseHelper {
             LoginDTO loginDTO = new LoginDTO();
             while (resultSet.next()) {
                 loginDTO.setUserId(resultSet.getInt(1));
-                loginDTO.setPassword(resultSet.getString(2));
-                loginDTO.setUsername(resultSet.getString(3));
+                loginDTO.setPassword(resultSet.getString("password"));
+                loginDTO.setUsername(resultSet.getString("username"));
             }
             return loginDTO;
         } catch (Exception exception) {

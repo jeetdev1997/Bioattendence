@@ -1,49 +1,14 @@
-/* 
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-/**
- * Author:  jeet dubey
-* Created: 23 Apr, 2020
- */
-CREATE DATABASE attendance_system_db;
-select database attendance_system_db;
-create table users (
-userid INT AUTO_INCREMENT PRIMARY KEY,
-firstname text,
-lasttname text,
-departmentid int,
-roleid int,
-address text,
-email text,
-isActive tinyint(1),
-createddate date,
-updateddate date,
-FOREIGN KEY (departmentId) REFERENCES department(id),
-FOREIGN KEY (roleId) REFERENCES roles(id),
-);
 
-Create table department(
-id INT AUTO_INCREMENT PRIMARY KEY,
-name text,
-isActive tinyint(1),
-createdate date,
-updatedate date
-);
-
-create table roles (
-id INT AUTO_INCREMENT PRIMARY KEY,
-role text,
-createdate date,
-updatedate date
-)
-
-create table login (
-userid INT  PRIMARY KEY,
-password text,
-username text,
-FOREIGN KEY (userid) REFERENCES user(userid)
-)
-)
-
+insert into department (name,isActive,createdate,updatedate) values ('Administration',1,null,null);
+insert into department (name,isActive,createdate,updatedate) values ('Human Resource',1,null,null);
+insert into department (name,isActive,createdate,updatedate) values ('Software Developer',1,null,null);
+select * from department ;
+insert into users (firstname,lastname,departmentid,roleid,address,email,isActive,createddate,updateddate) values ('Ashy','Yetre',4,2,'home','artificialgenius.ashyz@gmail.com',1,null,null);
+insert into users (firstname,lastname,departmentid,roleid,address,email,isActive,createddate,updateddate) values ('Rakesh','Thakre',4,2,'home','artificialgenius.ashyz@gmail.com',1,null,null);
+insert into users (firstname,lastname,departmentid,roleid,address,email,isActive,createddate,updateddate) values ('Ramesh','Maher',4,2,'home','artificialgenius.ashyz@gmail.com',1,null,null);
+insert into users (firstname,lastname,departmentid,roleid,address,email,isActive,createddate,updateddate) values ('Vinay','Khanna',4,2,'home','artificialgenius.ashyz@gmail.com',1,null,null);
+insert into users (firstname,lastname,departmentid,roleid,address,email,isActive,createddate,updateddate) values ('Farhan','Khan',4,2,'home','artificialgenius.ashyz@gmail.com',1,null,null);
+insert into users (firstname,lastname,departmentid,roleid,address,email,isActive,createddate,updateddate) values ('Suresh','Sharma',4,2,'home','artificialgenius.ashyz@gmail.com',1,null,null);
+select * from users;
+select * from userAttendance;
+select * from userAttendance where userid = 2 and attended_date between '1970-01-01' and CURDATE();

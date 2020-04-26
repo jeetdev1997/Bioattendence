@@ -12,7 +12,38 @@ drop database  attendance_system_db;
 CREATE DATABASE attendance_system_db;
 use attendance_system_db;
 
-drop table users;
+/*
+Department Table 
+*/
+Create table department(
+id INT AUTO_INCREMENT PRIMARY KEY,
+name text,
+isActive tinyint(1),
+createdate date,
+updatedate date
+);
+insert into department (name,isActive,createdate,updatedate) values ('Administration',1,null,null);
+insert into department (name,isActive,createdate,updatedate) values ('Human Resource',1,null,null);
+/*
+Department table End
+*/
+/*
+Roles Table Start
+*/
+create table roles (
+id INT AUTO_INCREMENT PRIMARY KEY,
+role text,
+createdate date,
+updatedate date
+);
+insert into roles (role,createdate,updatedate) values ('ADMIN',null,null);
+insert into roles (role,createdate,updatedate) values ('EMPLOYEE',null,null);
+/*
+Roles Table End
+*/
+/*
+Users Table Start 
+*/
 create table users (
 userid INT AUTO_INCREMENT PRIMARY KEY,
 firstname text,
@@ -27,35 +58,31 @@ updateddate date,
 FOREIGN KEY (departmentId) REFERENCES department(id),
 FOREIGN KEY (roleId) REFERENCES roles(id)
 );
-insert into users (firstname,lastname,departmentid,roleid,address,email,isActive,createddate,updateddate) values ('Ashish','Yetre',1,1,'home','artificialgenius.ashyz@gmail.com',1,null,null);
-Create table department(
-id INT AUTO_INCREMENT PRIMARY KEY,
-name text,
-isActive tinyint(1),
-createdate date,
-updatedate date
-);
-insert into department (name,isActive,createdate,updatedate) values ('Administration',1,null,null);
-create table roles (
-id INT AUTO_INCREMENT PRIMARY KEY,
-role text,
-createdate date,
-updatedate date
-);
-insert into roles (role,createdate,updatedate) values ('ADMIN',null,null);
-insert into roles (role,createdate,updatedate) values ('EMPLOYEE',null,null);
+insert into users (firstname,lastname,departmentid,roleid,address,email,isActive,createddate,updateddate) values 
+('Sonal','Admin',1,1,'Somewhere on Earth','addurEmail@adress',1,null,null);
 
-drop table login;
-
+insert into users (firstname,lastname,departmentid,roleid,address,email,isActive,createddate,updateddate) values 
+('Ashish','Yetre',1,1,'Somewhere on Earth','artificialgenius.ashyz@gmail.com',1,null,null);
+/*
+Users Table Start Ends
+*/
+/*
+Login Table Start Ends
+*/
 create table login (
 userid INT  PRIMARY KEY,
-password text,
 username text,
+password text,
 FOREIGN KEY (userid) REFERENCES users(userid)
 );
-insert into login (userid,password,username) values (1,'junkie','root');
-
-drop table userAttendance ;
+insert into login (userid,password,username) values (1,'soanl','sonal');
+insert into login (userid,password,username) values (2,'admin','admin');
+/*
+Login table end
+*/
+/*
+Attendance Table start
+*/
 create table userAttendance (
 id int AUTO_INCREMENT PRIMARY KEY,
 userid int,
@@ -64,18 +91,6 @@ in_time text,
 out_time text,
 FOREIGN KEY (userid) REFERENCES users(userid)
 );
-select * from userAttendance ;
-
-insert into department (name,isActive,createdate,updatedate) values ('Administration',1,null,null);
-insert into department (name,isActive,createdate,updatedate) values ('Human Resource',1,null,null);
-insert into department (name,isActive,createdate,updatedate) values ('Software Developer',1,null,null);
-select * from department ;
-insert into users (firstname,lastname,departmentid,roleid,address,email,isActive,createddate,updateddate) values ('Ashy','Yetre',4,2,'home','artificialgenius.ashyz@gmail.com',1,null,null);
-insert into users (firstname,lastname,departmentid,roleid,address,email,isActive,createddate,updateddate) values ('Rakesh','Thakre',4,2,'home','artificialgenius.ashyz@gmail.com',1,null,null);
-insert into users (firstname,lastname,departmentid,roleid,address,email,isActive,createddate,updateddate) values ('Ramesh','Maher',4,2,'home','artificialgenius.ashyz@gmail.com',1,null,null);
-insert into users (firstname,lastname,departmentid,roleid,address,email,isActive,createddate,updateddate) values ('Vinay','Khanna',4,2,'home','artificialgenius.ashyz@gmail.com',1,null,null);
-insert into users (firstname,lastname,departmentid,roleid,address,email,isActive,createddate,updateddate) values ('Farhan','Khan',4,2,'home','artificialgenius.ashyz@gmail.com',1,null,null);
-insert into users (firstname,lastname,departmentid,roleid,address,email,isActive,createddate,updateddate) values ('Suresh','Sharma',4,2,'home','artificialgenius.ashyz@gmail.com',1,null,null);
-select * from users;
-select * from userAttendance;
-select * from userAttendance where userid = 2 and attended_date between '1970-01-01' and CURDATE();
+/*
+Attendance Table End
+*/
