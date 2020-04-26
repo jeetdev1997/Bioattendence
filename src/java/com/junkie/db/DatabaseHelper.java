@@ -38,13 +38,14 @@ public class DatabaseHelper {
     private static final String SELECT_USER_SQL = "select * from users where userId = ?";
     private static final String SELECT_ROLE_SQL = "SELECT * FROM roles WHERE id=?";
     private static final String SELECT_DEPARTMENT_SQL = "SELECT * FROM department WHERE id=?";
-    private static final String INSERT_USERS_SQL = "INSERT INTO users" + "(userid,firstname,lastname,departmentid,roleid,address,email,isActive,createddate,updateddate) VALUES(?,?,?,?,?,?,?,?,?,?)";
-    private static final String INSERT_LOGIN_SQL = "INSERT INTO login" + "(userid,password,username) VALUES(?,?,?)";
+    private static final String INSERT_USERS_SQL = "INSERT INTO users" + "(firstname,lastname,departmentid,roleid,address,email,isActive,createddate,updateddate) VALUES(?,?,?,?,?,?,?,?,?)";
+    private static final String INSERT_LOGIN_SQL = "INSERT INTO login" + "(userid,username,password) VALUES(?,?,?)";
     private static final String SELECT_USERID_SQL = "SELECT * FROM users WHERE email=?";
     private static final String SELECT_USERS_SQL = "SELECT * FROM users";
     private static final String SELECT_USERNAME_SQL = "SELECT username FROM login WHERE userid=?";
     private static final String SELECT_ATTENDANCE_CURRENT_DATE_SQL = "select * from userAttendance where userid = ? and attended_date between ? and CURDATE();";
     private static final String UPDATE_USER_SQL = "UPDATE users set isActive=1 WHERE userid=?";
+    private static final String FIND_LOGIN_USER_NAME_SQL = "select * from login where userName = ?";
 
     public static void insertUserAttendance(List<AttendanceDTO> attendanceDTOList) throws SQLException, Exception {
         try (Connection connection = SQLConnectionHelper.getNewConnection();) {
@@ -138,46 +139,44 @@ public class DatabaseHelper {
         }
     }
 
-    public static void insertUsers(AddUser addUser) throws Exception {
+    public static int insertUsers(AddUser addUser) throws Exception {
         try (Connection connection = SQLConnectionHelper.getNewConnection();) {
-            PreparedStatement prepareStatement = connection.prepareStatement(INSERT_USERS_SQL);
-            prepareStatement.setString(1, null);
-            prepareStatement.setString(2, addUser.getFirstName());
-            prepareStatement.setString(3, addUser.getLastName());
-            prepareStatement.setInt(4, addUser.getDeptId());
-            prepareStatement.setInt(5, addUser.getRoleId());
-            prepareStatement.setString(6, addUser.getAddress());
-            prepareStatement.setString(7, addUser.getEmail());
-            prepareStatement.setInt(8, addUser.getIsActive());
-            prepareStatement.setString(9, addUser.getCreatedDate());
-            prepareStatement.setString(10, addUser.getUpdatedDate());
-            prepareStatement.addBatch();
-
-            int[] executeBatch = prepareStatement.executeBatch();
-            System.out.println("status : " + Arrays.toString(executeBatch));
+            PreparedStatement prepareStatement = connection.prepareStatement(INSERT_USERS_SQL, Statement.RETURN_GENERATED_KEYS);
+            prepareStatement.setString(1, addUser.getFirstName());
+            prepareStatement.setString(2, addUser.getLastName());
+            System.out.println("Department Id : " + addUser.getDeptId());
+            prepareStatement.setInt(3, addUser.getDeptId());
+            prepareStatement.setInt(4, addUser.getRoleId());
+            prepareStatement.setString(5, addUser.getAddress());
+            prepareStatement.setString(6, addUser.getEmail());
+            prepareStatement.setInt(7, 1);
+            prepareStatement.setDate(8, new Date(System.currentTimeMillis()));
+            prepareStatement.setDate(9, new Date(System.currentTimeMillis()));
+            prepareStatement.executeUpdate();
+            ResultSet rs = prepareStatement.getGeneratedKeys();
+            if (rs != null && rs.next()) {
+                int userId = rs.getInt(1);
+                System.out.println("Generated Emp Id: " + userId);
+                rs.close();
+                return userId;
+            }
+            return 0;
         } catch (Exception e) {
             throw e;
         }
     }
 
-    public static void insertlogIn(LoginDTO loginDTO, String email) throws SQLException, Exception {
+    public static void insertlogIn(LoginDTO loginDTO) throws Exception {
         try (Connection connection = SQLConnectionHelper.getNewConnection();) {
-            Statement statement = connection.createStatement();
-            String sqlQuery = SELECT_USERID_SQL.replaceFirst("[?]", "'" + email + "'");
-            ResultSet resultSet = statement.executeQuery(sqlQuery);
-            while (resultSet.next()) {
-                int userId = resultSet.getInt("userid");
-                PreparedStatement prepareStatement = connection.prepareStatement(INSERT_LOGIN_SQL);
-                prepareStatement.setInt(1, userId);
-                prepareStatement.setString(2, loginDTO.getPassword());
-                prepareStatement.setString(3, loginDTO.getUsername());
-                prepareStatement.addBatch();
-                int[] executeBatch = prepareStatement.executeBatch();
-            }
+            PreparedStatement prepareStatement = connection.prepareStatement(INSERT_LOGIN_SQL);
+            prepareStatement.setInt(1, loginDTO.getUserId());
+            prepareStatement.setString(2, loginDTO.getUsername());
+            prepareStatement.setString(3, loginDTO.getPassword());
+            prepareStatement.addBatch();
+            int[] executeBatch = prepareStatement.executeBatch();
         } catch (Exception e) {
             throw e;
         }
-
     }
 
     public static ArrayList<UserDTO> getUsers() throws SQLException, ClassNotFoundException {
@@ -300,7 +299,22 @@ public class DatabaseHelper {
             throw e;
         }
         return list;
+    }
 
+    public static boolean isLoginUsernamePresent(String username) throws Exception {
+        try (Connection connection = SQLConnectionHelper.getNewConnection();) {
+            Statement statement = connection.createStatement();
+            String sqlQuery = FIND_LOGIN_USER_NAME_SQL.replaceFirst("[?]", "'" + username + "'");
+            ResultSet resultSet = statement.executeQuery(sqlQuery);
+            while (resultSet.next()) {
+                if (username.equals(resultSet.getString("userName"))) {
+                    return true;
+                }
+            }
+        } catch (Exception e) {
+            throw e;
+        }
+        return false;
     }
 
 }

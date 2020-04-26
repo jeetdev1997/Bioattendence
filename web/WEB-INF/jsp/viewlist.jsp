@@ -39,7 +39,7 @@
                             <tr>
                                 <td scope="row">${userList.name}</td>
                                 <td align="center">${userList.department}</td>
-                                <td align="center">${userList.role}</td>
+                                <td align="center">${userList.roles.name}</td>
                                 <td align="center">${userList.address}</td>
                                 <td align="center">${userList.email}</td>
                                 <td align="center">
@@ -56,6 +56,5 @@
                     </tbody>
                 </table>
             </div>
-            <jsp:include page="footer.jsp" /> 
     </body>
 </html>

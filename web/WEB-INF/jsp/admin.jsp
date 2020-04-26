@@ -16,6 +16,5 @@
         <jsp:include page="header.jsp" />
         <div>
         </div>
-        <jsp:include page="footer.jsp" />
     </body>
 </html>

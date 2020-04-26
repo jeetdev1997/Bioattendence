@@ -16,7 +16,8 @@
         <div class="wrapper">
             <header class="header">
                 <h1 class="logo"><a href="#">Biometrics Attendance System</a></h1>
-                <c:if test="${admin==true}">
+              ${sessionScope.adminUser}
+                <c:if test="${sessionScope.adminUser}">
                 <ul class="main-nav">
                     <li><a href="/BiomatricsAttendenceSystem/attendance/uploadView.htm">Upload Attendance</a></li>
                     <li><a href="/BiomatricsAttendenceSystem/admin/viewlist.htm">Employees</a></li>

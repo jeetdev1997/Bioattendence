@@ -191,7 +191,7 @@ public class AttendenceSystemDb {
         return false;
 
     }
-
+    
     public static boolean isPresent(String userName, String password) {
         ResultSet resultRecord = null;
         try {

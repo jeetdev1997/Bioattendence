@@ -41,8 +41,8 @@ public class AdminController {
     @RequestMapping("adduser.htm")
     public ModelAndView addUser() throws Exception {
         ModelAndView mav = new ModelAndView("adduser");
-        ArrayList<DepartmentDTO> departmentDTOList=DatabaseHelper.getDepartment(); 
-        ArrayList<RolesDTO> rolesDTOList=DatabaseHelper.getRoles();
+        ArrayList<DepartmentDTO> departmentDTOList = DatabaseHelper.getDepartment();
+        ArrayList<RolesDTO> rolesDTOList = DatabaseHelper.getRoles();
         mav.addObject("department", departmentDTOList);
         mav.addObject("roles", rolesDTOList);
         for (RolesDTO rolesDTO : rolesDTOList) {
@@ -70,28 +70,34 @@ public class AdminController {
 
     @RequestMapping("add.htm")
     public ModelAndView add(@ModelAttribute AddUser addUser) throws Exception {
-        ModelAndView mav = new ModelAndView();
-        boolean isPresent = AttendenceSystemDb.isPresent(addUser);
-        if (!isPresent) {
-            DatabaseHelper.insertUsers(addUser);
+        ModelAndView mav = new ModelAndView("adduser");
+        if (!DatabaseHelper.isLoginUsernamePresent(addUser.getEmail())) {
+            int userId = DatabaseHelper.insertUsers(addUser);
             LoginDTO loginDTO = new LoginDTO();
+            loginDTO.setUserId(userId);
             loginDTO.setPassword(addUser.getPassword());
-            loginDTO.setUsername(addUser.getUserName());
-            DatabaseHelper.insertlogIn(loginDTO, addUser.getEmail());
-//            mav.addObject("employee", true);
-            mav.setViewName("success");
-        }
-       else
-        {
-//            mav.addObject("employee",false);
-            mav.setViewName("failed");
+            loginDTO.setUsername(addUser.getEmail());
+            DatabaseHelper.insertlogIn(loginDTO);
+            setDepartmentAndRoles(mav);
+            mav.addObject("message", "Registration Successfull.");
+        } else {
+            setDepartmentAndRoles(mav);
+            mav.addObject("message", "Registration Failed.");
         }
         return mav;
     }
+
+    private void setDepartmentAndRoles(ModelAndView mav) throws Exception {
+        ArrayList<DepartmentDTO> departmentDTOList = DatabaseHelper.getDepartment();
+        ArrayList<RolesDTO> rolesDTOList = DatabaseHelper.getRoles();
+        mav.addObject("department", departmentDTOList);
+        mav.addObject("roles", rolesDTOList);
+    }
+
     @RequestMapping("viewAttendance")
-    public ModelAndView attendanceView(@RequestParam("empId") String empId){
+    public ModelAndView attendanceView(@RequestParam("empId") String empId) {
         ModelAndView modelAndView = new ModelAndView();
-        if(!StringUtils.isEmpty(empId)){
+        if (!StringUtils.isEmpty(empId)) {
             IAttendanceService attendanceService = new AttendanceService();
             try {
                 UserAttendanceDTO userAttendanceDTO = attendanceService.getEmployeeAttendance(empId);
@@ -100,7 +106,7 @@ public class AdminController {
             } catch (Exception ex) {
                 Logger.getLogger(AdminController.class.getName()).log(Level.SEVERE, null, ex);
             }
-        }else{
+        } else {
             modelAndView.setViewName("");
         }
         return modelAndView;

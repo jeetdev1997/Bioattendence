@@ -37,7 +37,7 @@ public class UserController {
     }
 
     @RequestMapping("form.htm")
-    public ModelAndView login(@ModelAttribute AccessValidate accessValidate) {
+    public ModelAndView login(@ModelAttribute AccessValidate accessValidate,HttpServletRequest httpServletRequest) {
         ModelAndView mav = new ModelAndView();
         String userName = accessValidate.getUserName();
         String password = accessValidate.getPassword();
@@ -49,6 +49,7 @@ public class UserController {
                     mav.setViewName("admin");
                     mav.addObject("user", accessValidate);
                     mav.addObject("userid", loginDTO.getUserId());
+                    httpServletRequest.getSession().setAttribute("adminUser", true);
                     mav.addObject("admin", true);
                     return mav;
                 } else {
