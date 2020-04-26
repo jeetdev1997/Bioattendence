@@ -49,6 +49,7 @@ public class UserController {
                     mav.setViewName("admin");
                     mav.addObject("user", accessValidate);
                     mav.addObject("userid", loginDTO.getUserId());
+                    mav.addObject("admin", true);
                     return mav;
                 } else {
                     mav.setViewName("user");

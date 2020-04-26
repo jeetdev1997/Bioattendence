@@ -7,7 +7,9 @@ package controller;
 
 import com.junkie.db.DatabaseHelper;
 import com.junkie.dto.AttendanceDTO;
+import com.junkie.dto.DepartmentDTO;
 import com.junkie.dto.LoginDTO;
+import com.junkie.dto.RolesDTO;
 import com.junkie.dto.UserAttendanceDTO;
 import com.junkie.dto.UserDTO;
 import com.junkie.service.AttendanceService;
@@ -37,8 +39,12 @@ public class AdminController {
     private ResultSet resultSet;
 
     @RequestMapping("adduser.htm")
-    public ModelAndView addUser() {
+    public ModelAndView addUser() throws Exception {
         ModelAndView mav = new ModelAndView("adduser");
+        ArrayList<DepartmentDTO> departmentDTOList=DatabaseHelper.getDepartment(); 
+        ArrayList<RolesDTO> rolesDTOList=DatabaseHelper.getRoles();
+        mav.addObject("department", departmentDTOList);
+        mav.addObject("roles", rolesDTOList);
         return mav;
     }
 

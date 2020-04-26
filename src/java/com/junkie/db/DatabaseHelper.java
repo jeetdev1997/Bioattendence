@@ -43,7 +43,7 @@ public class DatabaseHelper {
     private static final String SELECT_DEPARTMENT_SQL = "SELECT * FROM department WHERE id=?";
     private static final String INSERT_USERS_SQL = "INSERT INTO users" + "(userid,firstname,lastname,departmentid,roleid,address,email,isActive,createddate,updateddate) VALUES(?,?,?,?,?,?,?,?,?,?)";
     private static final String INSERT_LOGIN_SQL = "INSERT INTO login" + "(userid,password,username) VALUES(?,?,?)";
-    private static final String SELECT_USERId_SQL = "SELECT * FROM users WHERE email=?";
+    private static final String SELECT_USERID_SQL = "SELECT * FROM users WHERE email=?";
     private static final String SELECT_USERS_SQL = "SELECT * FROM users";
     private static final String SELECT_USERNAME_SQL = "SELECT username FROM login WHERE userid=?";
     private static final String SELECT_ATTENDANCE_CURRENT_DATE_SQL = "select * from userAttendance where userid = ? and attended_date between ? and CURDATE();";
@@ -166,7 +166,7 @@ public class DatabaseHelper {
     public static void insertlogIn(LoginDTO loginDTO, String email) throws SQLException, Exception {
         try (Connection connection = SQLConnectionHelper.getNewConnection();) {
             Statement statement = connection.createStatement();
-            String sqlQuery = SELECT_USERId_SQL.replaceFirst("[?]", "'" + email + "'");
+            String sqlQuery = SELECT_USERID_SQL.replaceFirst("[?]", "'" + email + "'");
             ResultSet resultSet = statement.executeQuery(sqlQuery);
             while (resultSet.next()) {
                 int userId = resultSet.getInt("userid");
@@ -242,7 +242,7 @@ public class DatabaseHelper {
             String sqlQuery = SELECT_ATTENDANCE_CURRENT_DATE_SQL.replaceFirst("[?]", "" + userId);
             LocalDate withDayOfMonth = LocalDate.now().withDayOfMonth(1);
             sqlQuery = sqlQuery.replaceFirst("[?]", withDayOfMonth.toString());
-            System.out.println("SQL :"+sqlQuery);
+            System.out.println("SQL :" + sqlQuery);
             ResultSet resultSet = statement.executeQuery(sqlQuery);
             List<AttendanceDTO> attendanceDTOList = new ArrayList();
             while (resultSet.next()) {
@@ -256,7 +256,7 @@ public class DatabaseHelper {
                 attendanceDTO.setFormattedInTime(formatInTime);
                 String outTimestamp = resultSet.getString("out_time");
                 ofEpochSecond = LocalDateTime.ofEpochSecond(Long.valueOf(outTimestamp), 1, ZoneOffset.UTC);
-                String formatOutTime= ofEpochSecond.plusHours(5).plusMinutes(30).format(DateTimeFormatter.ofLocalizedTime(FormatStyle.SHORT));
+                String formatOutTime = ofEpochSecond.plusHours(5).plusMinutes(30).format(DateTimeFormatter.ofLocalizedTime(FormatStyle.SHORT));
                 attendanceDTO.setFormattedOutTime(formatOutTime);
                 attendanceDTOList.add(attendanceDTO);
             }
@@ -264,6 +264,46 @@ public class DatabaseHelper {
         } catch (Exception e) {
             throw e;
         }
+    }
+
+    public static ArrayList<RolesDTO> getRoles() throws Exception {
+        ArrayList<RolesDTO> list = new ArrayList<>();
+        try (Connection connection = SQLConnectionHelper.getNewConnection();) {
+            Statement statement = connection.createStatement();
+            String sqlQuery = SELECT_ROLE_SQL.replace(SELECT_ROLE_SQL, "SELECT * FROM roles");
+            ResultSet resultSet = statement.executeQuery(sqlQuery);
+            while (resultSet.next()) {
+                RolesDTO rolesDTO = new RolesDTO();
+                rolesDTO.setRoleId(resultSet.getInt("id"));
+                rolesDTO.setName(resultSet.getString("role"));
+                rolesDTO.setName(resultSet.getString("role"));
+                list.add(rolesDTO);
+            }
+        } catch (Exception e) {
+            throw e;
+        }
+        return list;
+
+    }
+
+    public static ArrayList<DepartmentDTO> getDepartment() throws Exception {
+        ArrayList<DepartmentDTO> list = new ArrayList<>();
+        try (Connection connection = SQLConnectionHelper.getNewConnection();) {
+            Statement statement = connection.createStatement();
+            String sqlQuery = SELECT_DEPARTMENT_SQL.replace(SELECT_DEPARTMENT_SQL, "SELECT * FROM department");
+            ResultSet resultSet = statement.executeQuery(sqlQuery);
+            while (resultSet.next()) {
+                DepartmentDTO departmentDTO = new DepartmentDTO();
+                departmentDTO.setDepartmentId(resultSet.getInt("id"));
+                departmentDTO.setName(resultSet.getString("name"));
+                departmentDTO.setIsActive(resultSet.getBoolean("isActive"));
+                list.add(departmentDTO);
+            }
+        } catch (Exception e) {
+            throw e;
+        }
+        return list;
+
     }
 
 }
