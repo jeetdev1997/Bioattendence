@@ -29,7 +29,8 @@
                 font-size: 150%;
                 position: fixed;
                 bottom: 0;
-                width: 99%;
+                width: 100%;
+                /*height: 50px;*/
                 /* needed for the floated layout*/
                 margin-bottom: 20px;
             }
