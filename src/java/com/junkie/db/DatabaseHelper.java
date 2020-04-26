@@ -273,7 +273,7 @@ public class DatabaseHelper {
                 RolesDTO rolesDTO = new RolesDTO();
                 rolesDTO.setRoleId(resultSet.getInt("id"));
                 rolesDTO.setName(resultSet.getString("role"));
-                rolesDTO.setName(resultSet.getString("role"));
+//                rolesDTO.setName(resultSet.getString("role"));
                 list.add(rolesDTO);
             }
         } catch (Exception e) {

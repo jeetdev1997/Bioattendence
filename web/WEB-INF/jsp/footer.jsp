@@ -30,7 +30,7 @@
                 position: fixed;
                 bottom: 0;
                 width: 100%;
-                /*height: 50px;*/
+                height: 8%;
                 /* needed for the floated layout*/
                 margin-bottom: 20px;
             }
@@ -39,7 +39,7 @@
     <body>
         <div class="wrapper-footer">
             <center> 
-                <header class="footer">Copyright</header>
+                <header class="footer" valign="center">Copyright</header>
             </center>
         </div>
     </body>

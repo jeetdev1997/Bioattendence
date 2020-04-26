@@ -45,6 +45,9 @@ public class AdminController {
         ArrayList<RolesDTO> rolesDTOList=DatabaseHelper.getRoles();
         mav.addObject("department", departmentDTOList);
         mav.addObject("roles", rolesDTOList);
+        for (RolesDTO rolesDTO : rolesDTOList) {
+            System.out.println("rolesDTO = " + rolesDTO.getRoleId());
+        }
         return mav;
     }
 
@@ -67,7 +70,7 @@ public class AdminController {
 
     @RequestMapping("add.htm")
     public ModelAndView add(@ModelAttribute AddUser addUser) throws Exception {
-        ModelAndView mav = new ModelAndView("adduser");
+        ModelAndView mav = new ModelAndView();
         boolean isPresent = AttendenceSystemDb.isPresent(addUser);
         if (!isPresent) {
             DatabaseHelper.insertUsers(addUser);
@@ -75,6 +78,13 @@ public class AdminController {
             loginDTO.setPassword(addUser.getPassword());
             loginDTO.setUsername(addUser.getUserName());
             DatabaseHelper.insertlogIn(loginDTO, addUser.getEmail());
+//            mav.addObject("employee", true);
+            mav.setViewName("success");
+        }
+       else
+        {
+//            mav.addObject("employee",false);
+            mav.setViewName("failed");
         }
         return mav;
     }

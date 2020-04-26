@@ -16,7 +16,9 @@
         <title>JSP Page</title>
        <link href="<c:url value="/resources/css/adduser.css" />" rel="stylesheet">
         <jsp:include page="header.jsp" /> 
-        <jsp:include page="footer.jsp" /> 
+        <%--<jsp:include page="footer.jsp" />--%> 
+         
+        <js>
     </head>
     <body>
        <center> <div class="div" >
@@ -66,5 +68,6 @@
             </form>
         </div>
            </center>
+    <p><center><jsp:include page="massage.jsp" /></center></p>
     </body>
 </html>

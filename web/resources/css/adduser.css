@@ -29,8 +29,8 @@ select{
 }
 
 input[type=submit] {
-  width: 50%;
-  height: 20px;
+  width: 25%;
+  height: 30px;
   background-color: #4CAF50;
   color: white;
   padding: 1px 20px;
