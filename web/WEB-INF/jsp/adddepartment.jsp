@@ -10,7 +10,7 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>JSP Page</title>
+        <title>Department</title>
         <link href="<c:url value="/resources/css/form-design.css" />" rel="stylesheet">
     </head>
     <body>
@@ -18,37 +18,46 @@
         <div>
             <h3>${message}</h3>
         </div>
-        <form action="add.htm" method="post" id="js-form">
-            <h3>Create Employee Account</h3>
+        <form action="adddepartment.htm" method="post" id="js-form">
+            <h3>Create Department</h3>
             <div class="name">
-                <input type="text" name="firstName" placeholder="firstName" />
-                <input type="text" name="lastName" placeholder="LastName" />
-                <input type="text" name="userName" placeholder="Login Name" />
-                <input type="text" name="password" placeholder="Password" />
-                <input type="mail" name="email" placeholder="email@dot.com"/>
+                <!--<input type="text" name="firstName" placeholder="firstName" />-->
+                <!--<input type="text" name="lastName" placeholder="LastName" />-->
+                <!--<input type="text" name="userName" placeholder="Login Name" />-->
+                <input type="text" class="deptInput" name="name" placeholder="department" />
+                <!--<input type="mail" name="email" placeholder="email@dot.com"/>-->
             </div>
-            <div class="dropdown">
+<!--            <div class="dropdown">
                 <label for="select-choice">Select Department:</label>
                 <select name="deptId" id="deptId">
                     <option value="none"/>Select</option>
 
-                    <c:forEach items="${department}" var="dept">
-                        <option value="${dept.departmentId}">${dept.name}</option>
-                    </c:forEach>
+                    <%--<c:forEach items="${department}" var="dept">--%>
+                  </select>
+                <label for="select-choice">Select Role</label>
+                <select name="roleId" id="roleId">
+                    <option value="none"/>Select</option>
+
+                    <%--<c:forEach items="${roles}" var="role">--%>
+                        <option value="${role.roleId}">${role.name}</option>
+                    <%--</c:forEach>--%>
+                </select>
+            </div>        <option value="${dept.departmentId}">${dept.name}</option>
+                    <%--</c:forEach>--%>
                 </select>
                 <label for="select-choice">Select Role</label>
                 <select name="roleId" id="roleId">
                     <option value="none"/>Select</option>
 
-                    <c:forEach items="${roles}" var="role">
+                    <%--<c:forEach items="${roles}" var="role">--%>
                         <option value="${role.roleId}">${role.name}</option>
-                    </c:forEach>
+                    <%--</c:forEach>--%>
                 </select>
-            </div>
-            <div class="message">
+            </div>-->
+<!--            <div class="message">
                 <label for="textarea">Address:</label>
                 <textarea cols="40" rows="8" name="address" id="address"></textarea>
-            </div>
+            </div>-->
             <div class="submit">
                 <input type="submit" value="Submit"/>
             </div>

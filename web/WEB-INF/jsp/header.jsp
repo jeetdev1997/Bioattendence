@@ -22,7 +22,8 @@
                     <li><a href="/BiomatricsAttendenceSystem/attendance/uploadView.htm">Upload Attendance</a></li>
                     <li><a href="/BiomatricsAttendenceSystem/admin/viewlist.htm">Employees</a></li>
                     <li><a href="/BiomatricsAttendenceSystem/admin/adduser.htm">Add Employee</a></li>
-                    <li><a href="#">Contact</a></li>
+                    <li><a href="/BiomatricsAttendenceSystem/admin/department.htm">Add Department</a></li>
+                    <li><a href="/BiomatricsAttendenceSystem/admin/role.htm">Add Role</a></li>
                 </ul>
                 </c:if>
             </header> 

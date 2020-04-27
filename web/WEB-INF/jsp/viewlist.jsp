@@ -48,6 +48,7 @@
                                         <ul>
                                             <li><a href="delete.htm?empId=${userList.userId}">Delete</a></li>
                                             <li><a href="viewAttendance.htm?empId=${userList.userId}">Show Attendance</a></li>
+                                            <li><a href="edit.htm?empId=${userList.userId}">Edit Employee</a></li>
                                         </ul>
                                     </span>
                                 </td>

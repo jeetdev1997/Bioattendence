@@ -84,9 +84,9 @@ textarea {
 }
 .check input:before {left:-.1px;}
 .submit input {
-  //display: block;
+/*  //display: block;
   //margin: auto;
-  //width: 99.5%;
+  //width: 99.5%;*/
   background: #1abc9c;
   color: #fff;
   border: 0;
@@ -101,5 +101,8 @@ textarea {
   &:active {
     background: #1bc2a2;
     border-bottom-color: darken(#1bc2a2, 7%);
+  }
+  .deptInput{
+      width: 100%;
   }
 }

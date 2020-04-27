@@ -21,15 +21,8 @@ public class UserDTO {
     private String updatedDate;
     private RolesDTO roles;
     private DepartmentDTO department;
-//    private String departmentName;
 
-//    public String getDepartmentName() {
-//        return departmentName;
-//    }
-//
-//    public void setDepartmentName(String departmentName) {
-//        this.departmentName = departmentName;
-//    }
+    
     public String getRole() {
         return role;
     }

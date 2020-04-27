@@ -61,28 +61,32 @@ public class AdminController {
     }
 
     @RequestMapping("delete.htm")
-    public ModelAndView delete(@RequestParam int userId, int isActive) throws SQLException, ClassNotFoundException {
+    public ModelAndView delete(@RequestParam int empId) throws SQLException, ClassNotFoundException {
         ModelAndView mav = new ModelAndView("delete");
-        DatabaseHelper.updateUsers(userId);
-
+        DatabaseHelper.updateUsers(empId);
         return mav;
     }
 
     @RequestMapping("add.htm")
     public ModelAndView add(@ModelAttribute AddUser addUser) throws Exception {
         ModelAndView mav = new ModelAndView("adduser");
-        if (!DatabaseHelper.isLoginUsernamePresent(addUser.getEmail())) {
-            int userId = DatabaseHelper.insertUsers(addUser);
-            LoginDTO loginDTO = new LoginDTO();
-            loginDTO.setUserId(userId);
-            loginDTO.setPassword(addUser.getPassword());
-            loginDTO.setUsername(addUser.getEmail());
-            DatabaseHelper.insertlogIn(loginDTO);
-            setDepartmentAndRoles(mav);
-            mav.addObject("message", "Registration Successfull.");
+        if (!DatabaseHelper.isLoginUserPresent(addUser.getEmail())) {
+            if (!DatabaseHelper.isLoginUserNamePresent(addUser.getUserName())) {
+                int userId = DatabaseHelper.insertUsers(addUser);
+                LoginDTO loginDTO = new LoginDTO();
+                loginDTO.setUserId(userId);
+                loginDTO.setPassword(addUser.getPassword());
+                loginDTO.setUsername(addUser.getUserName());
+                DatabaseHelper.insertlogIn(loginDTO);
+                setDepartmentAndRoles(mav);
+                mav.addObject("message", "Registration Successfull.");
+            } else {
+                setDepartmentAndRoles(mav);
+                mav.addObject("message", "user already present.");
+            }
         } else {
             setDepartmentAndRoles(mav);
-            mav.addObject("message", "Registration Failed.");
+            mav.addObject("message", "username already present");
         }
         return mav;
     }
@@ -111,4 +115,70 @@ public class AdminController {
         }
         return modelAndView;
     }
+
+    @RequestMapping("edit.htm")
+    public ModelAndView editEmployee(@RequestParam int empId) throws Exception {
+        ModelAndView mav = new ModelAndView("edit");
+        ArrayList<DepartmentDTO> departmentDTOList = DatabaseHelper.getDepartment();
+        ArrayList<RolesDTO> rolesDTOList = DatabaseHelper.getRoles();
+        String userName = DatabaseHelper.getUserName(empId);
+        mav.addObject("user", userName);
+        mav.addObject("department", departmentDTOList);
+        mav.addObject("roles", rolesDTOList);
+        return mav;
+    }
+
+    @RequestMapping("updateemployee.htm")
+    public ModelAndView updateEmployee(@ModelAttribute AddUser addUser) throws Exception {
+        ModelAndView mav = new ModelAndView("edit");
+        int userId = DatabaseHelper.getUserId(addUser.getUserName());
+        System.out.println("ControlleruserId = " + userId);
+
+        if (!DatabaseHelper.isLoginUserPresent(addUser.getEmail())) {
+            DatabaseHelper.updateUsers(addUser, userId);
+            setDepartmentAndRoles(mav);
+            mav.addObject("message", "Update Successfull.");
+        } else {
+            setDepartmentAndRoles(mav);
+            mav.addObject("message", "user already exist");
+        }
+        return mav;
+    }
+
+    @RequestMapping("department.htm")
+    public ModelAndView viewDepartment() {
+        ModelAndView mav = new ModelAndView("adddepartment");
+        return mav;
+    }
+
+    @RequestMapping("adddepartment.htm")
+    public ModelAndView addDepartment(@ModelAttribute DepartmentDTO departmentDTO) throws Exception {
+        ModelAndView mav = new ModelAndView("adddepartment");
+        if (!DatabaseHelper.isDepartmentPresent(departmentDTO.getName())) {
+            int deptId = DatabaseHelper.insertDepartment(departmentDTO);
+            mav.addObject("message", "Department Added Successfully");
+        } else {
+            mav.addObject("message", "Department Already Exist");
+        }
+        return mav;
+    }
+
+    @RequestMapping("role.htm")
+    public ModelAndView viewRole() {
+        ModelAndView mav = new ModelAndView("addrole");
+        return mav;
+    }
+
+    @RequestMapping("addroles.htm")
+    public ModelAndView addRole(@ModelAttribute RolesDTO rolesDTO) throws Exception {
+        ModelAndView mav = new ModelAndView("addrole");
+        if (!DatabaseHelper.isRolePresent(rolesDTO.getName())) {
+            int roleId = DatabaseHelper.insertRoles(rolesDTO);
+            mav.addObject("message", "Role Added Successfully");
+        } else {
+            mav.addObject("message", "Role Already Exist");
+        }
+        return mav;
+    }
+
 }
