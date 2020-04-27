@@ -18,6 +18,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.Month;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
@@ -25,6 +26,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import model.AddUser;
+import org.springframework.util.StringUtils;
 
 /**
  *
@@ -58,9 +60,10 @@ public class DatabaseHelper {
             PreparedStatement prepareStatement = connection.prepareStatement(INSERT_ATTENDANCE_SQL);
             for (AttendanceDTO attendanceDTO : attendanceDTOList) {
                 prepareStatement.setInt(1, new Integer(attendanceDTO.getEmpId()));
-                prepareStatement.setDate(2, attendanceDTO.getAttendedDate());
-                prepareStatement.setString(3, attendanceDTO.getInTimestamp());
-                prepareStatement.setString(4, attendanceDTO.getOutTimestamp());
+                prepareStatement.setString(2, attendanceDTO.getStatus());
+                prepareStatement.setDate(3, attendanceDTO.getAttendedDate());
+                prepareStatement.setString(4, attendanceDTO.getInTimestamp());
+                prepareStatement.setString(5, attendanceDTO.getOutTimestamp());
                 prepareStatement.addBatch();
             }
             int[] executeBatch = prepareStatement.executeBatch();
@@ -122,7 +125,8 @@ public class DatabaseHelper {
         return rolesDTO;
     }
 
-    public static UserDTO getUserById(Integer userId) throws SQLException, ClassNotFoundException {
+   
+public static UserDTO getUserById(Integer userId) throws SQLException, ClassNotFoundException {
         try (Connection connection = SQLConnectionHelper.getNewConnection();) {
             Statement createStatement = connection.createStatement();
             String sqlQuery = SELECT_USER_SQL.replaceFirst("[?]", "" + userId);
@@ -130,6 +134,8 @@ public class DatabaseHelper {
             UserDTO user = new UserDTO();
             while (resultSet.next()) {
                 user.setUserId(resultSet.getInt("userid"));
+                user.setFirstName(resultSet.getString("firstname"));
+                user.setLastName(resultSet.getString("lastname"));
                 user.setAddress(resultSet.getString("address"));
                 user.setEmail(resultSet.getString("email"));
                 user.setRoles(getRoleById(resultSet.getInt("roleId")));
@@ -144,6 +150,7 @@ public class DatabaseHelper {
             throw ex;
         }
     }
+
 
     public static int insertUsers(AddUser addUser) throws Exception {
         try (Connection connection = SQLConnectionHelper.getNewConnection();) {
@@ -194,7 +201,8 @@ public class DatabaseHelper {
             while (resultSet.next()) {
                 UserDTO user = new UserDTO();
                 user.setUserId(resultSet.getInt("userid"));
-                user.setName((resultSet.getString("firstname") + " " + resultSet.getString("lastname")));
+                user.setFirstName(resultSet.getString("firstname"));
+                user.setLastName(resultSet.getString("lastname"));
                 user.setAddress(resultSet.getString("address"));
                 user.setEmail(resultSet.getString("email"));
                 user.setRoles(getRoleById(resultSet.getInt("roleId")));
@@ -238,20 +246,28 @@ public class DatabaseHelper {
         }
     }
 
-    public static List<AttendanceDTO> getEmployeeAttendanceByEmpId(Integer userId) throws Exception {
+     public static List<AttendanceDTO> getEmployeeAttendanceByEmpId(Integer userId, String month) throws Exception {
         try (Connection connection = SQLConnectionHelper.getNewConnection();) {
-            Statement statement = connection.createStatement();
-            String sqlQuery = SELECT_ATTENDANCE_CURRENT_DATE_SQL.replaceFirst("[?]", "" + userId);
+            PreparedStatement statement = connection.prepareStatement(SELECT_ATTENDANCE_CURRENT_DATE_SQL);
+            statement.setInt(1, userId);
             LocalDate withDayOfMonth = LocalDate.now().withDayOfMonth(1);
-            sqlQuery = sqlQuery.replaceFirst("[?]", withDayOfMonth.toString());
-            System.out.println("SQL :" + sqlQuery);
-            ResultSet resultSet = statement.executeQuery(sqlQuery);
+            String endDate = "CURDATE()";
+            if (!StringUtils.isEmpty(month)) {
+                System.out.println("Month:" + month);
+                withDayOfMonth = LocalDate.of(2020, Month.valueOf(month), 1);
+                endDate = LocalDate.of(2020, Month.valueOf(month), withDayOfMonth.lengthOfMonth()).toString();
+            }
+            statement.setString(2, withDayOfMonth.toString());
+            statement.setString(3, endDate);
+            System.out.println("SQL :" + statement.toString());
+            ResultSet resultSet = statement.executeQuery();
             List<AttendanceDTO> attendanceDTOList = new ArrayList();
             while (resultSet.next()) {
                 AttendanceDTO attendanceDTO = new AttendanceDTO();
                 Date attended_date = resultSet.getDate("attended_date");
                 attendanceDTO.setDay(attended_date.toLocalDate().getDayOfWeek().name());
                 attendanceDTO.setAttendedDate(attended_date);
+                attendanceDTO.setStatus(resultSet.getString("status"));
                 String inTimestamp = resultSet.getString("in_time");
                 LocalDateTime ofEpochSecond = LocalDateTime.ofEpochSecond(Long.valueOf(inTimestamp), 1, ZoneOffset.UTC);
                 String formatInTime = ofEpochSecond.plusHours(5).plusMinutes(30).format(DateTimeFormatter.ofLocalizedTime(FormatStyle.SHORT));

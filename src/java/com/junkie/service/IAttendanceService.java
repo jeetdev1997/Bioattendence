@@ -17,4 +17,6 @@ public interface IAttendanceService {
     public void parseAndSaveAttendance(MultipartFile file) throws Exception;
 
     public UserAttendanceDTO getEmployeeAttendance(String userId) throws Exception;
+
+    public UserAttendanceDTO getEmployeeAttendanceByMonth(int userId, String month) throws Exception;
 }

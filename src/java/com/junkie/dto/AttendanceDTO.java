@@ -6,6 +6,9 @@
 package com.junkie.dto;
 
 import java.sql.Date;
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
+import java.time.format.DateTimeFormatter;
 
 /**
  *
@@ -22,6 +25,29 @@ public class AttendanceDTO {
     private String formattedOutTime;
     private Date inTime;
     private Date outTime;
+    private String status;
+
+    public AttendanceDTO(){
+        
+    }
+    
+    public AttendanceDTO(String empId, String status, String inTimestamp, String outTimestamp) {
+        this.empId = empId;
+        this.status = status;
+        this.inTimestamp = inTimestamp;
+        this.outTimestamp = outTimestamp;
+        LocalDateTime localDate = LocalDateTime.ofEpochSecond(Long.valueOf(inTimestamp), 1, ZoneOffset.UTC);
+        String format = localDate.toLocalDate().format(DateTimeFormatter.ISO_DATE);
+        this.attendedDate = Date.valueOf(format);
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
 
     public String getFormattedInTime() {
         return formattedInTime;
@@ -62,7 +88,6 @@ public class AttendanceDTO {
     public void setDay(String day) {
         this.day = day;
     }
-    
 
     public Date getAttendedDate() {
         return attendedDate;

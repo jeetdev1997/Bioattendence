@@ -49,10 +49,20 @@ public class AttendanceService implements IAttendanceService {
         UserDTO user = DatabaseHelper.getUserById(new Integer(userId));
         UserAttendanceDTO userAttendanceDTO = new UserAttendanceDTO();
         userAttendanceDTO.setUser(user);
-        List<AttendanceDTO> employeeAttendanceList = DatabaseHelper.getEmployeeAttendanceByEmpId(user.getUserId());
+        List<AttendanceDTO> employeeAttendanceList = DatabaseHelper.getEmployeeAttendanceByEmpId(user.getUserId(), null);
         CommonUtils.sortListByDate(employeeAttendanceList);
         userAttendanceDTO.setAttendanceList(employeeAttendanceList);
         return userAttendanceDTO;
     }
 
+    @Override
+    public UserAttendanceDTO getEmployeeAttendanceByMonth(int userId, String month) throws SQLException, ClassNotFoundException, Exception {
+        UserDTO user = DatabaseHelper.getUserById(userId);
+        UserAttendanceDTO userAttendanceDTO = new UserAttendanceDTO();
+        userAttendanceDTO.setUser(user);
+        List<AttendanceDTO> employeeAttendanceList = DatabaseHelper.getEmployeeAttendanceByEmpId(user.getUserId(), month);
+        CommonUtils.sortListByDate(employeeAttendanceList);
+        userAttendanceDTO.setAttendanceList(employeeAttendanceList);
+        return userAttendanceDTO;
+    }
 }

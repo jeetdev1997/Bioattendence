@@ -5,6 +5,8 @@
  */
 package com.junkie.dto;
 
+import com.junkie.common.CommonUtils;
+import java.time.Month;
 import java.util.List;
 
 /**
@@ -13,8 +15,46 @@ import java.util.List;
  */
 public class UserAttendanceDTO {
 
+    private List<String> monthList;
     private UserDTO user;
     private List<AttendanceDTO> attendanceList;
+    private String currentMonth;
+    private int presentDays;
+    private int absentDays;
+
+    public List<String> getMonthList() {
+        this.monthList = CommonUtils.getTillDateMonthList();
+        return monthList;
+    }
+
+    public int getPresentDays() {
+        if (attendanceList != null & attendanceList.size() > 0) {
+            for (AttendanceDTO attendanceDTO : attendanceList) {
+                if (attendanceDTO.getStatus().equals("PRESENT") && !attendanceDTO.getDay().equals("SUNDAY")) {
+                    presentDays++;
+                }
+            }
+        }
+        return presentDays;
+    }
+
+    public int getAbsentDays() {
+        if (attendanceList != null & attendanceList.size() > 0) {
+            for (AttendanceDTO attendanceDTO : attendanceList) {
+                if (attendanceDTO.getStatus().equals("ABSENT")) {
+                    absentDays++;
+                }
+            }
+        }
+        return absentDays;
+    }
+
+    public String getCurrentMonth() {
+        if (attendanceList != null & attendanceList.size() > 0) {
+            currentMonth = Month.of(attendanceList.get(0).getAttendedDate().getMonth()+1).toString();
+        }
+        return currentMonth;
+    }
 
     public UserDTO getUser() {
         return user;
