@@ -100,5 +100,6 @@ public class CommonUtils {
 
     public static void main(String[] args) throws IOException {
         generateAttendanceXLSSheet();
+//        createAttendanceListByEmpId("7");
     }
 }
