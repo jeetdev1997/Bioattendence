@@ -83,9 +83,11 @@ Login table end
 /*
 Attendance Table start
 */
+drop table userAttendance ;
 create table userAttendance (
 id int AUTO_INCREMENT PRIMARY KEY,
 userid int,
+status text,
 attended_date date,
 in_time text,
 out_time text,
