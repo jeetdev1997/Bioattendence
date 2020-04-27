@@ -24,7 +24,7 @@
                 <!--<input type="text" name="firstName" placeholder="firstName" />-->
                 <!--<input type="text" name="lastName" placeholder="LastName" />-->
                 <!--<input type="text" name="userName" placeholder="Login Name" />-->
-                <input type="text" class="deptInput" name="name" placeholder="department" />
+                <input type="text" class="deptInput" name="name" placeholder="department" required="" />
                 <!--<input type="mail" name="email" placeholder="email@dot.com"/>-->
             </div>
 <!--            <div class="dropdown">

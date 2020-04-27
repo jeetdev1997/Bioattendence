@@ -21,22 +21,22 @@
         <form action="updateemployee.htm" method="post" id="js-form">
              <h3>Edit Employee Account</h3>
             <div class="name">
-                <input type="text" name="firstName"  placeholder="firstName" />
-                <input type="text" name="lastName" placeholder="LastName" />
+                <input type="text" name="firstName"  placeholder="firstName" required="" />
+                <input type="text" name="lastName" placeholder="LastName" required=""/>
                 <input type="text" name="userName" value="${user}" readonly="" />
                 <!--<input type="text" name="password" placeholder="Password" />-->
-                <input type="mail" name="email" placeholder="email@dot.com"/>
+                <input type="mail" name="email" placeholder="email@dot.com" required=""/>
             </div>
             <div class="dropdown">
                 <label for="select-choice">Select Department:</label>
-                <select name="deptId" id="deptId">
+                <select name="deptId" id="deptId" required="">
                     <option value="none"/>Select</option>
                     <c:forEach items="${department}" var="dept">
                         <option value="${dept.departmentId}">${dept.name}</option>
                     </c:forEach>
                 </select>
                 <label for="select-choice">Select Role</label>
-                <select name="roleId" id="roleId">
+                <select name="roleId" id="roleId" required="">
                      <option value="none"/>Select</option>
                     <c:forEach items="${roles}" var="role">
                         <option value="${role.roleId}">${role.name}</option>
