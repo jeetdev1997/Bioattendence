@@ -23,7 +23,7 @@
             <div class="name">
                 <input type="text" name="firstName" placeholder="firstName" required="" />
                 <input type="text" name="lastName" placeholder="LastName" required=""/>
-                <input type="text" name="userName" placeholder="Login Name" required=""/>
+                <!--<input type="text" name="userName" placeholder="Login Name" required=""/>-->
                 <input type="password" name="password" placeholder="Password" required=""/>
                 <input type="mail" name="email" placeholder="email@dot.com" required=""/>
             </div>

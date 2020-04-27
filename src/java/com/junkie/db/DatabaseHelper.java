@@ -46,8 +46,8 @@ public class DatabaseHelper {
     private static final String SELECT_ATTENDANCE_CURRENT_DATE_SQL = "select * from userAttendance where userid = ? and attended_date between ? and CURDATE();";
     private static final String UPDATE_USER_SQL = "UPDATE users set isActive=1 WHERE userid=?";
     private static final String FIND_LOGIN_USER_NAME_SQL = "select * from login";
-    private static final String FIND_USER_SQL = "select * from users";
-    private static final String UPDATE_USERS_SQL = "UPDATE users SET firstname=?" + "," + "lastname=?" + "," + "departmentid=?" + "," + "roleid=?" + "," + "address=?" + "," + "email=?" + "" + " WHERE userid=?;";
+//    private static final String FIND_USER_SQL = "select * from users";
+    private static final String UPDATE_USERS_SQL = "UPDATE users SET firstname=?" + "," + "lastname=?" + "," + "departmentid=?" + "," + "roleid=?" + "," + "address=?" + " " + " WHERE userid=?;";
     private static final String INSERT_DEPARTMENT_SQL = "INSERT INTO department" + "(name,isActive,createdate,updatedate) VALUES(?,?,?,?)";
     private static final String FIND_DEPARTMENT_SQL = "select * from department";
     private static final String INSERT_ROLES_SQL = "INSERT INTO roles" + "(role,createdate,updatedate) VALUES(?,?,?)";
@@ -176,8 +176,8 @@ public class DatabaseHelper {
         try (Connection connection = SQLConnectionHelper.getNewConnection();) {
             PreparedStatement prepareStatement = connection.prepareStatement(INSERT_LOGIN_SQL);
             prepareStatement.setInt(1, loginDTO.getUserId());
-            prepareStatement.setString(2, loginDTO.getPassword());
-            prepareStatement.setString(3, loginDTO.getUsername());
+            prepareStatement.setString(2, loginDTO.getUsername());
+            prepareStatement.setString(3, loginDTO.getPassword());
             prepareStatement.addBatch();
             int[] executeBatch = prepareStatement.executeBatch();
         } catch (Exception e) {
@@ -307,13 +307,13 @@ public class DatabaseHelper {
         return list;
     }
 
-    public static boolean isLoginUserPresent(String email) throws Exception {
+    public static boolean isLoginUserNamePresent(String email) throws Exception {
         try (Connection connection = SQLConnectionHelper.getNewConnection();) {
             Statement statement = connection.createStatement();
-            String sqlQuery = FIND_USER_SQL;
+            String sqlQuery = FIND_LOGIN_USER_NAME_SQL;
             ResultSet resultSet = statement.executeQuery(sqlQuery);
             while (resultSet.next()) {
-                if (email.equals(resultSet.getString("email"))) {
+                if (email.equals(resultSet.getString("username"))) {
                     return true;
                 }
             }
@@ -326,7 +326,7 @@ public class DatabaseHelper {
     public static void updateUsers(AddUser addUser, int userId) throws SQLException, ClassNotFoundException {
         try (Connection connection = SQLConnectionHelper.getNewConnection();) {
             Statement statement = connection.createStatement();
-            String sqlQuery = UPDATE_USERS_SQL.replaceFirst("[?]", "'" + addUser.getFirstName() + "'").replaceFirst("[?]", "'" + addUser.getLastName() + "'").replaceFirst("[?]", "" + addUser.getDeptId()+"").replaceFirst("[?]", "" + addUser.getRoleId()+"").replaceFirst("[?]", "'" + addUser.getAddress() + "'").replaceFirst("[?]", "'" + addUser.getEmail() + "'").replaceFirst("[?]", "" + userId);
+            String sqlQuery = UPDATE_USERS_SQL.replaceFirst("[?]", "'" + addUser.getFirstName() + "'").replaceFirst("[?]", "'" + addUser.getLastName() + "'").replaceFirst("[?]", "" + addUser.getDeptId()+"").replaceFirst("[?]", "" + addUser.getRoleId()+"").replaceFirst("[?]", "'" + addUser.getAddress() + "'").replaceFirst("[?]", "" + userId);
 //            String sqlQuery1 = sqlQuery.replaceFirst("[?]", "'" + addUser.getLastName() + "'");
 //            String sqlQuery2 = sqlQuery1.replaceFirst("[?]", "" + addUser.getDeptId()+"");
 //            String sqlQuery3 = sqlQuery2.replaceFirst("[?]", "" + addUser.getRoleId()+"");
@@ -356,21 +356,21 @@ public class DatabaseHelper {
         return userId;
     }
 
-    public static boolean isLoginUserNamePresent(String userName) throws Exception {
-        try (Connection connection = SQLConnectionHelper.getNewConnection();) {
-            Statement statement = connection.createStatement();
-            String sqlQuery = FIND_LOGIN_USER_NAME_SQL;
-            ResultSet resultSet = statement.executeQuery(sqlQuery);
-            while (resultSet.next()) {
-                if (userName.equals(resultSet.getString("username"))) {
-                    return true;
-                }
-            }
-        } catch (Exception e) {
-            throw e;
-        }
-        return false;
-    }
+//    public static boolean isLoginUserNamePresent(String userName) throws Exception {
+//        try (Connection connection = SQLConnectionHelper.getNewConnection();) {
+//            Statement statement = connection.createStatement();
+//            String sqlQuery = FIND_LOGIN_USER_NAME_SQL;
+//            ResultSet resultSet = statement.executeQuery(sqlQuery);
+//            while (resultSet.next()) {
+//                if (userName.equals(resultSet.getString("username"))) {
+//                    return true;
+//                }
+//            }
+//        } catch (Exception e) {
+//            throw e;
+//        }
+//        return false;
+//    }
 
     public static int insertDepartment(DepartmentDTO dTO) throws Exception {
         try (Connection connection = SQLConnectionHelper.getNewConnection();) {

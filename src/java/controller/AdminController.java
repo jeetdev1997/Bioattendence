@@ -70,20 +70,15 @@ public class AdminController {
     @RequestMapping("add.htm")
     public ModelAndView add(@ModelAttribute AddUser addUser) throws Exception {
         ModelAndView mav = new ModelAndView("adduser");
-        if (!DatabaseHelper.isLoginUserPresent(addUser.getEmail())) {
-            if (!DatabaseHelper.isLoginUserNamePresent(addUser.getUserName())) {
+        if (!DatabaseHelper.isLoginUserNamePresent(addUser.getEmail())) {
                 int userId = DatabaseHelper.insertUsers(addUser);
                 LoginDTO loginDTO = new LoginDTO();
                 loginDTO.setUserId(userId);
+                loginDTO.setUsername(addUser.getEmail());
                 loginDTO.setPassword(addUser.getPassword());
-                loginDTO.setUsername(addUser.getUserName());
                 DatabaseHelper.insertlogIn(loginDTO);
                 setDepartmentAndRoles(mav);
                 mav.addObject("message", "Registration Successfull.");
-            } else {
-                setDepartmentAndRoles(mav);
-                mav.addObject("message", "user already present.");
-            }
         } else {
             setDepartmentAndRoles(mav);
             mav.addObject("message", "username already present");
@@ -121,8 +116,8 @@ public class AdminController {
         ModelAndView mav = new ModelAndView("edit");
         ArrayList<DepartmentDTO> departmentDTOList = DatabaseHelper.getDepartment();
         ArrayList<RolesDTO> rolesDTOList = DatabaseHelper.getRoles();
-        String userName = DatabaseHelper.getUserName(empId);
-        mav.addObject("user", userName);
+        UserDTO userDTO=DatabaseHelper.getUserById(empId);
+        mav.addObject("email", userDTO.getEmail());
         mav.addObject("department", departmentDTOList);
         mav.addObject("roles", rolesDTOList);
         return mav;
@@ -131,17 +126,11 @@ public class AdminController {
     @RequestMapping("updateemployee.htm")
     public ModelAndView updateEmployee(@ModelAttribute AddUser addUser) throws Exception {
         ModelAndView mav = new ModelAndView("edit");
-        int userId = DatabaseHelper.getUserId(addUser.getUserName());
+        int userId = DatabaseHelper.getUserId(addUser.getEmail());
         System.out.println("ControlleruserId = " + userId);
-
-        if (!DatabaseHelper.isLoginUserPresent(addUser.getEmail())) {
             DatabaseHelper.updateUsers(addUser, userId);
             setDepartmentAndRoles(mav);
             mav.addObject("message", "Update Successfull.");
-        } else {
-            setDepartmentAndRoles(mav);
-            mav.addObject("message", "user already exist");
-        }
         return mav;
     }
 

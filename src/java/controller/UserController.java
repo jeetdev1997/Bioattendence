@@ -40,7 +40,9 @@ public class UserController {
     public ModelAndView login(@ModelAttribute AccessValidate accessValidate,HttpServletRequest httpServletRequest) {
         ModelAndView mav = new ModelAndView();
         String userName = accessValidate.getUserName();
+        System.out.println("userName = " + userName);
         String password = accessValidate.getPassword();
+        System.out.println("password = " + password);
         try {
             LoginDTO loginDTO = DatabaseHelper.getLoginUser(userName, password);
             if (loginDTO != null & loginDTO.getUserId() != 0) {
