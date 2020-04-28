@@ -45,7 +45,7 @@ public class DatabaseHelper {
     private static final String SELECT_USERID_SQL = "SELECT * FROM login WHERE username=?";
     private static final String SELECT_USERS_SQL = "SELECT * FROM users";
     private static final String SELECT_USERNAME_SQL = "SELECT username FROM login WHERE userid=?";
-    private static final String SELECT_ATTENDANCE_CURRENT_DATE_SQL = "select * from userAttendance where userid = ? and attended_date between ? and CURDATE();";
+    private static final String SELECT_ATTENDANCE_CURRENT_DATE_SQL = "select * from userAttendance where userid = ? and attended_date between ? and ?;";
     private static final String UPDATE_USER_SQL = "UPDATE users set isActive=1 WHERE userid=?";
     private static final String FIND_LOGIN_USER_NAME_SQL = "select * from login";
 //    private static final String FIND_USER_SQL = "select * from users";
