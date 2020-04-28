@@ -16,16 +16,26 @@
         <div class="wrapper">
             <header class="header">
                 <h1 class="logo"><a href="#">Biometrics Attendance System</a></h1>
-              ${sessionScope.adminUser}
-                <c:if test="${sessionScope.adminUser}">
+              <!--${sessionScope.adminUser}-->
+              <c:choose>
+              <c:when test="${sessionScope.adminUser}">
                 <ul class="main-nav">
                     <li><a href="/BiomatricsAttendenceSystem/attendance/uploadView.htm">Upload Attendance</a></li>
                     <li><a href="/BiomatricsAttendenceSystem/admin/viewlist.htm">Employees</a></li>
                     <li><a href="/BiomatricsAttendenceSystem/admin/adduser.htm">Add Employee</a></li>
                     <li><a href="/BiomatricsAttendenceSystem/admin/department.htm">Add Department</a></li>
                     <li><a href="/BiomatricsAttendenceSystem/admin/role.htm">Add Role</a></li>
+                     <li><a href="/BiomatricsAttendenceSystem/user/logout.htm">Log Out</a></li>
                 </ul>
-                </c:if>
+              </c:when>
+                  <c:when test="${sessionScope.EmployeeUser}">
+                      <ul class="main-nav">
+                          <li><a href="/BiomatricsAttendenceSystem/employee/profile.htm?empId=${sessionScope.userid}">Profile</a></li>
+                      <li><a href="/BiomatricsAttendenceSystem/employee/viewAttendance.htm?empId=${sessionScope.userid}">View Attendance</a></li>
+                      <li><a href="/BiomatricsAttendenceSystem/employee/logout.htm">Log Out</a></li>
+                    </ul>
+                  </c:when>
+                </c:choose>
             </header> 
         </div>
     </body>

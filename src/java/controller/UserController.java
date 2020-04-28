@@ -14,6 +14,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import model.AccessValidate;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -56,8 +57,10 @@ public class UserController {
                     return mav;
                 } else {
                     mav.setViewName("user");
+                     httpServletRequest.getSession().setAttribute("EmployeeUser", true);
+                     httpServletRequest.getSession().setAttribute("userid", loginDTO.getUserId());
                     mav.addObject("user", accessValidate);
-                    mav.addObject("userid", loginDTO.getUserId());
+//                    mav.addObject("userid", loginDTO.getUserId());
                     return mav;
                 }
             }
@@ -72,11 +75,11 @@ public class UserController {
         return mav;
     }
     @RequestMapping("logout.htm")
-    public ModelAndView logout(HttpServletRequest request,HttpServletResponse response)
+    public ModelAndView logout(HttpServletRequest httpServletRequest)
     {
         ModelAndView mav =new ModelAndView();
+       httpServletRequest.getSession().invalidate();
         mav.setViewName("login");
-        request.getSession().invalidate();
         return mav;
     }
 }

@@ -38,5 +38,6 @@
     <bean name="c" class="controller.UserController"/>
     <bean name="admin" class="controller.AdminController"/>
     <bean name="attendance" class="controller.AttendanceController"/>
+    <bean name="employee" class="controller.EmployeeController"/>
 
 </beans>
