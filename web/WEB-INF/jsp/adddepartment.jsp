@@ -15,7 +15,7 @@
     </head>
     <body>
         <jsp:include page="header.jsp" /> 
-        <div>
+        <div style="text-align: center">
             <h3>${message}</h3>
         </div>
         <form action="adddepartment.htm" method="post" id="js-form">
@@ -27,37 +27,6 @@
                 <input type="text" class="deptInput" name="name" placeholder="department" required="" />
                 <!--<input type="mail" name="email" placeholder="email@dot.com"/>-->
             </div>
-<!--            <div class="dropdown">
-                <label for="select-choice">Select Department:</label>
-                <select name="deptId" id="deptId">
-                    <option value="none"/>Select</option>
-
-                    <%--<c:forEach items="${department}" var="dept">--%>
-                  </select>
-                <label for="select-choice">Select Role</label>
-                <select name="roleId" id="roleId">
-                    <option value="none"/>Select</option>
-
-                    <%--<c:forEach items="${roles}" var="role">--%>
-                        <option value="${role.roleId}">${role.name}</option>
-                    <%--</c:forEach>--%>
-                </select>
-            </div>        <option value="${dept.departmentId}">${dept.name}</option>
-                    <%--</c:forEach>--%>
-                </select>
-                <label for="select-choice">Select Role</label>
-                <select name="roleId" id="roleId">
-                    <option value="none"/>Select</option>
-
-                    <%--<c:forEach items="${roles}" var="role">--%>
-                        <option value="${role.roleId}">${role.name}</option>
-                    <%--</c:forEach>--%>
-                </select>
-            </div>-->
-<!--            <div class="message">
-                <label for="textarea">Address:</label>
-                <textarea cols="40" rows="8" name="address" id="address"></textarea>
-            </div>-->
             <div class="submit">
                 <input type="submit" value="Submit"/>
             </div>

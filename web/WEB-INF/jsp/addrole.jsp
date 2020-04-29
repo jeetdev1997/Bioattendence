@@ -15,7 +15,7 @@
     </head>
     <body>
         <jsp:include page="header.jsp" /> 
-        <div>
+        <div style="text-align: center">
             <h3>${message}</h3>
         </div>
         <form action="addroles.htm" method="post" id="js-form">

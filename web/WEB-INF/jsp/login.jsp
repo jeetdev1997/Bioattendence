@@ -24,7 +24,7 @@
                     <!--</form>-->
                 </div>
             </form>
-            <<br/><br/><br/><br/><br/><br/><br/><br/><br/>
+            <br/><br/><br/><br/><br/><br/><br/><br/><br/>
              <h5 style="color: whitesmoke"> ${message}</h5>
         </div>
     </body>
