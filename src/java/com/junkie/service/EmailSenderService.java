@@ -21,6 +21,7 @@ import javax.mail.internet.MimeMessage;
  */
 public class EmailSenderService implements ISenderService {
 
+    //https://myaccount.google.com/lesssecureapps?pli=1
     private String username="@gmail.com";
     private String password="";
     @Override
