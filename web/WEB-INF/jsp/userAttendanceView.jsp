@@ -51,6 +51,7 @@
                             <th scope="col">Month</th>
                             <th scope="col">Present Days</th>
                             <th scope="col">Leave Days</th>
+                            <th scope="col">Email Notice</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -59,9 +60,13 @@
                             <td align="center">${userAttendance.currentMonth}</td>
                             <td align="center">${userAttendance.presentDays}</td>
                             <td align="center">${userAttendance.absentDays}</td>
+                            <td align="center"><a href="email.htm?userId=${userAttendance.user.userId}"> Send Email </a></td>
                         </tr>
                     </tbody>
                 </table>
+                <div style="text-align: center">
+                    <span>${emailMessage}</span>
+                </div> 
             </div>
             <table>
                 <thead>

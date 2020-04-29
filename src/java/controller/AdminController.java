@@ -5,21 +5,26 @@
  */
 package controller;
 
+import com.junkie.context.ApplicationContextProvider;
 import com.junkie.db.DatabaseHelper;
 import com.junkie.dto.AttendanceRequestDTO;
 import com.junkie.dto.DepartmentDTO;
 import com.junkie.dto.LoginDTO;
 import com.junkie.dto.RolesDTO;
+import com.junkie.dto.SenderDTO;
 import com.junkie.dto.UserAttendanceDTO;
 import com.junkie.dto.UserDTO;
 import com.junkie.service.AttendanceService;
+import com.junkie.service.EmailSenderService;
 import com.junkie.service.IAttendanceService;
-import java.sql.ResultSet;
+import com.junkie.service.ISenderService;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import model.AddUser;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -35,7 +40,11 @@ import org.springframework.web.servlet.ModelAndView;
 @Controller
 public class AdminController {
 
-    private ResultSet resultSet;
+    ISenderService senderService;
+
+    public AdminController() {
+        senderService = new EmailSenderService();
+    }
 
     @RequestMapping("adduser.htm")
     public ModelAndView addUser() throws Exception {
@@ -187,6 +196,33 @@ public class AdminController {
             mav.addObject("message", "Role Already Exist");
         }
         return mav;
+    }
+
+    @RequestMapping("email.htm")
+    public ModelAndView sendEmail(@RequestParam("userId") String userId) {
+        ModelAndView modelAndView = new ModelAndView();
+
+        System.out.println("controller.AdminController.sendEmail() : " + senderService);
+        if (!StringUtils.isEmpty(userId)) {
+            IAttendanceService attendanceService = new AttendanceService();
+            try {
+                UserAttendanceDTO userAttendanceDTO = attendanceService.getEmployeeAttendance(userId);
+                SenderDTO senderDTO = new SenderDTO();
+                senderDTO.setSentToEmail(userAttendanceDTO.getUser().getEmail());
+                senderDTO.setEmailMessage("testing email");
+                senderDTO.setEmailSubject("Testing email subject");
+                senderService.send(senderDTO);
+
+                modelAndView.addObject("userAttendance", userAttendanceDTO);
+                modelAndView.setViewName("userAttendanceView");
+                modelAndView.addObject("emailMessage", "Email sent succesfully");
+            } catch (Exception ex) {
+                Logger.getLogger(AdminController.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        } else {
+            modelAndView.setViewName("");
+        }
+        return modelAndView;
     }
 
 }
