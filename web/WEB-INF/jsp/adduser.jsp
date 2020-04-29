@@ -15,8 +15,8 @@
     </head>
     <body>
         <jsp:include page="header.jsp" /> 
-        <div>
-            <h3>${message}</h3>
+        <div style="text-align: center">
+            <h3>${message} ${userId}</h3>
         </div>
         <form action="add.htm" method="post" id="js-form">
             <h3>Create Employee Account</h3>
@@ -24,8 +24,8 @@
                 <input type="text" name="firstName" placeholder="firstName" required="" />
                 <input type="text" name="lastName" placeholder="LastName" required=""/>
                 <!--<input type="text" name="userName" placeholder="Login Name" required=""/>-->
-                <input type="password" name="password" placeholder="Password" required=""/>
                 <input type="mail" name="email" placeholder="email@dot.com" required=""/>
+                <input type="password" name="password" placeholder="Password" required="" ma/>
             </div>
             <div class="dropdown">
                 <label for="select-choice">Select Department:</label>

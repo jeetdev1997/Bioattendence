@@ -13,12 +13,11 @@ import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import model.AccessValidate;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 /**
@@ -37,8 +36,8 @@ public class UserController {
         return mav;
     }
 
-    @RequestMapping("form.htm")
-    public ModelAndView login(@ModelAttribute AccessValidate accessValidate,HttpServletRequest httpServletRequest) {
+    @RequestMapping(method = RequestMethod.POST, value = "form.htm")
+    public ModelAndView login(@ModelAttribute AccessValidate accessValidate, HttpServletRequest httpServletRequest) {
         ModelAndView mav = new ModelAndView();
         String userName = accessValidate.getUserName();
         System.out.println("userName = " + userName);
@@ -57,8 +56,8 @@ public class UserController {
                     return mav;
                 } else {
                     mav.setViewName("user");
-                     httpServletRequest.getSession().setAttribute("EmployeeUser", true);
-                     httpServletRequest.getSession().setAttribute("userid", loginDTO.getUserId());
+                    httpServletRequest.getSession().setAttribute("EmployeeUser", true);
+                    httpServletRequest.getSession().setAttribute("userid", loginDTO.getUserId());
                     mav.addObject("user", accessValidate);
 //                    mav.addObject("userid", loginDTO.getUserId());
                     return mav;
@@ -72,13 +71,14 @@ public class UserController {
             Logger.getLogger(UserController.class.getName()).log(Level.SEVERE, null, ex);
         }
         mav.setViewName("login");
+        mav.addObject("message", "Username or Password is incorrect.");
         return mav;
     }
+
     @RequestMapping("logout.htm")
-    public ModelAndView logout(HttpServletRequest httpServletRequest)
-    {
-        ModelAndView mav =new ModelAndView();
-       httpServletRequest.getSession().invalidate();
+    public ModelAndView logout(HttpServletRequest httpServletRequest) {
+        ModelAndView mav = new ModelAndView();
+        httpServletRequest.getSession().invalidate();
         mav.setViewName("login");
         return mav;
     }

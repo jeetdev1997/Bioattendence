@@ -25,14 +25,14 @@
                     <li><a href="/BiomatricsAttendenceSystem/admin/adduser.htm">Add Employee</a></li>
                     <li><a href="/BiomatricsAttendenceSystem/admin/department.htm">Add Department</a></li>
                     <li><a href="/BiomatricsAttendenceSystem/admin/role.htm">Add Role</a></li>
-                     <li><a href="/BiomatricsAttendenceSystem/user/logout.htm">Log Out</a></li>
+                     <li><a href="/BiomatricsAttendenceSystem/user/logout.htm">Logout</a></li>
                 </ul>
               </c:when>
                   <c:when test="${sessionScope.EmployeeUser}">
                       <ul class="main-nav">
                           <li><a href="/BiomatricsAttendenceSystem/employee/profile.htm?empId=${sessionScope.userid}">Profile</a></li>
                       <li><a href="/BiomatricsAttendenceSystem/employee/viewAttendance.htm?empId=${sessionScope.userid}">View Attendance</a></li>
-                      <li><a href="/BiomatricsAttendenceSystem/employee/logout.htm">Log Out</a></li>
+                      <li><a href="/BiomatricsAttendenceSystem/user/logout.htm">Logout</a></li>
                     </ul>
                   </c:when>
                 </c:choose>

@@ -31,8 +31,6 @@
                 <label>${user.email}</label><br>
                 <label>Address:</label>&nbsp;
                 <label>${user.address}</label><br>
-                <label>Role:</label>&nbsp;
-                <label>${user.role}</label><br>
                 <label>Department:</label>&nbsp;
                 <label>${user.department}</label>
                 

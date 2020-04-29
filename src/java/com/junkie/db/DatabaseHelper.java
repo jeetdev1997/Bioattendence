@@ -35,7 +35,7 @@ import org.springframework.util.StringUtils;
 public class DatabaseHelper {
 
     private static final String INSERT_ATTENDANCE_SQL = "INSERT INTO userAttendance"
-            + " (userid,attended_date,in_time, out_time) VALUES (?,?,?,?)";
+            + " (userid,status,attended_date,in_time, out_time) VALUES (?,?,?,?,?)";
     private static final String SELECT_LOGIN_SQL = "select * from login where username = ? and password = ?";
     private static final String SELECT_USER_SQL = "select * from users where userId = ?";
     private static final String SELECT_ROLE_SQL = "SELECT * FROM roles WHERE id=?";
@@ -256,6 +256,8 @@ public static UserDTO getUserById(Integer userId) throws SQLException, ClassNotF
                 System.out.println("Month:" + month);
                 withDayOfMonth = LocalDate.of(2020, Month.valueOf(month), 1);
                 endDate = LocalDate.of(2020, Month.valueOf(month), withDayOfMonth.lengthOfMonth()).toString();
+            }else{
+                endDate= LocalDate.now().toString();
             }
             statement.setString(2, withDayOfMonth.toString());
             statement.setString(3, endDate);

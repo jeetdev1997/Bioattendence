@@ -6,6 +6,7 @@
 package controller;
 
 import com.junkie.db.DatabaseHelper;
+import com.junkie.dto.AttendanceRequestDTO;
 import com.junkie.dto.UserAttendanceDTO;
 import com.junkie.dto.UserDTO;
 import com.junkie.service.AttendanceService;
@@ -14,12 +15,11 @@ import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-import org.springframework.beans.factory.support.SecurityContextProvider;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -60,11 +60,22 @@ public class EmployeeController
         return modelAndView;  
     }
      
-      @RequestMapping("logout.htm")
-    public ModelAndView logout(HttpServletRequest httpServletRequest)
-    {
-        ModelAndView mav =new ModelAndView("login");
-    httpServletRequest.getSession().invalidate();
-        return mav;
+     @RequestMapping(method = RequestMethod.POST, value = "updateAttendance")
+    public ModelAndView getAttendanceByMonth(@ModelAttribute AttendanceRequestDTO requestDTO) {
+        ModelAndView modelAndView = new ModelAndView();
+        if (requestDTO.getUserId() > 0) {
+            IAttendanceService attendanceService = new AttendanceService();
+            try {
+                UserAttendanceDTO userAttendanceDTO = attendanceService.getEmployeeAttendanceByMonth(requestDTO.getUserId(), requestDTO.getMonth());
+                modelAndView.addObject("userAttendance", userAttendanceDTO);
+                modelAndView.setViewName("userAttendanceView");
+            } catch (Exception ex) {
+                Logger.getLogger(AdminController.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        } else {
+            //redirect to failure state
+            modelAndView.setViewName("fail");
+        }
+        return modelAndView;
     }
 }

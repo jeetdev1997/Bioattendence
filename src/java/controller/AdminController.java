@@ -77,10 +77,11 @@ public class AdminController {
             loginDTO.setPassword(addUser.getPassword());
             DatabaseHelper.insertlogIn(loginDTO);
             setDepartmentAndRoles(mav);
-            mav.addObject("message", "Registration Successfull.");
+            mav.addObject("userId", userId);
+            mav.addObject("message", "Registration Successfull and Employee Id is ");
         } else {
             setDepartmentAndRoles(mav);
-            mav.addObject("message", "username already present");
+            mav.addObject("message", "Email-Id already present. Please use different Email-id");
         }
         return mav;
     }

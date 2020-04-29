@@ -13,7 +13,7 @@ public class LoginDTO {
  
     private String username;
     private String password;
-    private Integer userId;
+    private int userId;
 
     public String getUsername() {
         return username;
