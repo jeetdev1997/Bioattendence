@@ -17,7 +17,7 @@
         <jsp:include page="header.jsp" />
 
         <div class="buttons">
-            <button class="raise">Raise</button>
+            <!--<button class="raise">Raise</button>-->
         </div>
         
         <%--<jsp:include page="footer.jsp" />--%>
