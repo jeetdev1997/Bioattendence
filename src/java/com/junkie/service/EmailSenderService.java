@@ -23,7 +23,7 @@ public class EmailSenderService implements ISenderService {
 
     //https://myaccount.google.com/lesssecureapps?pli=1
     private String username="ajeetdubey986@gmail.com";
-    private String password="7991843192@Jeet";
+    private String password="";
     @Override
     public void send(SenderDTO senderDTO) {
         try {
